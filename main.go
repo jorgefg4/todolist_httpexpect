@@ -1,13 +1,17 @@
 package main
 
 import (
-	"ToDoList/data"
-	"ToDoList/database"
-	"ToDoList/server"
-	"ToDoList/task"
+	// "ToDoList/data"
+	// "ToDoList/database"
+	// "ToDoList/server"
+	// "ToDoList/task"
 	"fmt"
 	"net/http"
 
+	"github.com/jorgefg4/todolist/data"
+	"github.com/jorgefg4/todolist/database"
+	"github.com/jorgefg4/todolist/server"
+	"github.com/jorgefg4/todolist/task"
 	"github.com/rs/cors"
 )
 

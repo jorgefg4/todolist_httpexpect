@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"sync"
 
-	task "ToDoList/task"
+	//task "ToDoList/task"
+	task "github.com/jorgefg4/todolist/task"
 )
 
 type taskRepository struct {

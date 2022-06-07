@@ -6,12 +6,14 @@ import (
 	"html/template"
 	"net/http"
 
-	"ToDoList/assets"
-	"ToDoList/task"
+	//"ToDoList/assets"
+	//"ToDoList/task"
 
 	"fmt"
 
 	"github.com/gorilla/mux"
+	"github.com/jorgefg4/todolist/assets"
+	"github.com/jorgefg4/todolist/task"
 )
 
 // Templates
