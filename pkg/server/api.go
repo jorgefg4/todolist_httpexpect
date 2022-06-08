@@ -12,8 +12,8 @@ import (
 	"fmt"
 
 	"github.com/gorilla/mux"
-	"github.com/jorgefg4/todolist/assets"
-	"github.com/jorgefg4/todolist/task"
+	"github.com/jorgefg4/todolist/pkg/task"
+	"github.com/jorgefg4/todolist/web/assets"
 )
 
 // Templates
@@ -23,12 +23,12 @@ var secondViewTpl *template.Template
 var thirdViewTpl *template.Template
 
 func init() {
-	navigationBarHTML = assets.MustAssetString("templates/navigation_bar.html")
+	navigationBarHTML = assets.MustAssetString("web/templates/navigation_bar.html")
 
-	homepageHTML := assets.MustAssetString("templates/index.html")
+	homepageHTML := assets.MustAssetString("web/templates/index.html")
 	homepageTpl = template.Must(template.New("homepage_view").Parse(homepageHTML))
 
-	secondViewHTML := assets.MustAssetString("templates/second_view.html")
+	secondViewHTML := assets.MustAssetString("web/templates/second_view.html")
 	secondViewTpl = template.Must(template.New("second_view").Parse(secondViewHTML))
 
 	// thirdViewFuncMap := ThirdViewFormattingFuncMap()
@@ -57,7 +57,7 @@ func New(repo task.TaskRepository) Server {
 	r.HandleFunc("/tasks", a.addTask).Methods(http.MethodPost)
 	r.HandleFunc("/tasks/{ID:[a-zA-Z0-9_]+}", a.removeTask).Methods(http.MethodDelete)
 	r.HandleFunc("/tasks/{ID:[a-zA-Z0-9_]+}", a.modifyTask).Methods(http.MethodPut)
-	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
+	r.PathPrefix("/web/static/").Handler(http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static"))))
 	//r.HandleFunc("/gophers/{ID:[a-zA-Z0-9_]+}", a.fetchGopher).Methods(http.MethodGet)
 
 	a.router = r
@@ -70,9 +70,9 @@ func (a *api) Router() http.Handler { //metodo
 
 // HomeHandler renders the homepage view template
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	push(w, "/static/style.css")
-	push(w, "/static/todolist.css")
-	push(w, "/static/navigation_bar.css")
+	push(w, "/web/static/style.css")
+	push(w, "/web/static/todolist.css")
+	push(w, "/web/static/navigation_bar.css")
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
 	fullData := map[string]interface{}{

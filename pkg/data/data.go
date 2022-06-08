@@ -2,7 +2,7 @@ package data
 
 import (
 	//task "ToDoList/task"
-	task "github.com/jorgefg4/todolist/task"
+	task "github.com/jorgefg4/todolist/pkg/task"
 )
 
 var Tasks = map[string]*task.Task{

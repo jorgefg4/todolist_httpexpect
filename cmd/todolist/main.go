@@ -6,12 +6,13 @@ import (
 	// "ToDoList/server"
 	// "ToDoList/task"
 	"fmt"
+	"log"
 	"net/http"
 
-	"github.com/jorgefg4/todolist/data"
-	"github.com/jorgefg4/todolist/database"
-	"github.com/jorgefg4/todolist/server"
-	"github.com/jorgefg4/todolist/task"
+	"github.com/jorgefg4/todolist/pkg/data"
+	"github.com/jorgefg4/todolist/pkg/database"
+	"github.com/jorgefg4/todolist/pkg/server"
+	"github.com/jorgefg4/todolist/pkg/task"
 	"github.com/rs/cors"
 )
 
@@ -28,7 +29,7 @@ func main() {
 
 	//Cabeceras CORS:
 	handler := cors.New(cors.Options{AllowedMethods: []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"}}).Handler(s.Router())
-	http.ListenAndServe(":8000", handler)
+	log.Fatal(http.ListenAndServe(":8000", handler))
 
 	//http.ListenAndServe(":8000", s.Router()) //Se pone a escuchar en el puerto TCP 8000 de localhost y llama al handler
 
