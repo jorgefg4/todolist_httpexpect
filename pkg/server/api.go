@@ -45,6 +45,7 @@ type api struct {
 
 type Server interface {
 	Router() http.Handler
+	fetchTasks(w http.ResponseWriter, r *http.Request) //para el test
 }
 
 func New(repo task.TaskRepository) Server {
