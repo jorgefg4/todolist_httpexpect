@@ -123,6 +123,7 @@ var _webTemplatesIndexHtml = []byte(`<!DOCTYPE html>
             var div = this.parentElement;
             div.style.display = "none";
 
+            deleteinbackend(this.parentElement.id);  //se llama a la función para borrar el elemento en el backend
           }
         }
         
@@ -142,8 +143,7 @@ var _webTemplatesIndexHtml = []byte(`<!DOCTYPE html>
         const url = "http://localhost:8000";
         window.onload = handleGETtasksButton();
 
-        //muestra todas las tareas al cargar la pagina
-        function handleGETtasksButton() {
+        function handleGETtasksButton() {   //muestra todas las tareas al cargar la pagina
             
             // solicitud a la API REST vía método GET
             fetch(url + "/tasks")
@@ -159,8 +159,10 @@ var _webTemplatesIndexHtml = []byte(`<!DOCTYPE html>
                     
                     var li = document.createElement("li");
                     var nombre = json[i].name;
+                    
                     var t = document.createTextNode(nombre);
                     li.appendChild(t);
+                    li.id = json[i].ID; //le asigna a cada etiqueta HTML <li> el ID de la task
                       
                     var span = document.createElement("SPAN");
                     var txt = document.createTextNode("\u00D7");
@@ -175,6 +177,7 @@ var _webTemplatesIndexHtml = []byte(`<!DOCTYPE html>
                   close[i].onclick = function() {
                     var div = this.parentElement;
                     div.style.display = "none";
+                    deleteinbackend(this.parentElement.id);
                   }
                 }
             
@@ -192,6 +195,8 @@ var _webTemplatesIndexHtml = []byte(`<!DOCTYPE html>
           var taskname = document.getElementById("myInput").value;
           var t = document.createTextNode(taskname);
           li.appendChild(t);
+
+          
           if (taskname === '') {
             alert("You must write something!");
           } else {
@@ -214,10 +219,12 @@ var _webTemplatesIndexHtml = []byte(`<!DOCTYPE html>
             .then(text => {
                 // depuración en consola del navegador
                 console.log(text);
+                li.id=text; //le asigno el ID de la task devuelto por el backend a la etiqueta HTML <li>
+
                 // conversión de respuesta de texto (html) a objeto json
-                // json = JSON.parse(text);
-                // // volcado a pantalla de la respuesta
-                // movieId.innerHTML = json.id;
+                 //json = JSON.parse(text);
+                 //volcado a pantalla de la respuesta
+                 //movieId.innerHTML = json.id;
             })
             // procesamiento de errores
             .catch(err => {
@@ -240,11 +247,38 @@ var _webTemplatesIndexHtml = []byte(`<!DOCTYPE html>
             close[i].onclick = function() {
               var div = this.parentElement;
               div.style.display = "none";
+              deleteinbackend(this.parentElement.id);
             }
           }
 
         }
 
+
+        /////////////////////////////
+        ////////////////////////////
+
+        function deleteinbackend(id){   //para borrar la task en el backend
+            console.log(id);
+            // solicitud a la API REST vía método POST
+            fetch(url + "/tasks/"+id, {
+            method: 'DELETE',
+            
+            })
+            // promesas encadenadas
+            .then(res => res.text())
+            // procesamiento de la respuesta
+            .then(text => {
+                // depuración en consola del navegador
+                console.log(text);
+                
+            })
+            // procesamiento de errores
+            .catch(err => {
+                // depuración en consola del navegador
+                console.error(err);
+            });
+
+        }
         </script>
         
     </html>`)

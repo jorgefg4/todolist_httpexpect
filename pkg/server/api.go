@@ -6,10 +6,9 @@ import (
 	"html/template"
 	"net/http"
 
-	//"ToDoList/assets"
-	//"ToDoList/task"
-
 	"fmt"
+
+	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/jorgefg4/todolist/pkg/task"
@@ -21,6 +20,9 @@ var navigationBarHTML string
 var homepageTpl *template.Template
 var secondViewTpl *template.Template
 var thirdViewTpl *template.Template
+
+//Variable para asignar IDs a las tasks
+var numID = 0
 
 func init() {
 	navigationBarHTML = assets.MustAssetString("web/templates/navigation_bar.html")
@@ -117,9 +119,13 @@ func (a *api) addTask(w http.ResponseWriter, r *http.Request) { //para añadir n
 
 	w.Header().Set("Content-Type", "application/json")
 
+	numID++                    //primero incrementamos el ID
+	t.ID = strconv.Itoa(numID) //luego convierte el ID a string y se lo asigna a la nueva task
 	a.repository.CreateGopher(&t)
 
 	w.WriteHeader(http.StatusCreated)
+
+	json.NewEncoder(w).Encode(numID) //se envia como respuesta el ID de la task
 }
 
 func (a *api) removeTask(w http.ResponseWriter, r *http.Request) { //para borrar una tarea
