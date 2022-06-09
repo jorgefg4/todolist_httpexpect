@@ -1,4 +1,4 @@
-FROM golang:1.13 as dockerTest
+FROM golang:1.18.3 as development
 
 # Spedify the working directory
 WORKDIR /app
@@ -15,4 +15,5 @@ COPY . .
 EXPOSE 8000
 
 # Start the app
-CMD ["go run", ".\cmd\todolist"]
+#CMD ["go run", "./cmd/todolist"]
+CMD go run ./cmd/todolist
