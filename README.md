@@ -16,7 +16,7 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8000`. 
 ## Technologies
 ***
 A list of technologies used within the project:
-* [Go](https://go.dev): Version 1.13.8
+* [Go](https://go.dev): Version 1.18.3
 * [rs/cors](https://github.com/rs/cors")
 * [gorilla/mux"](https://"github.com/gorilla/mux")
 ## Installation
