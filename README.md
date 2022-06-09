@@ -5,8 +5,6 @@ This code repo contains the code developed for a Go rest API consisting of a sim
 1. [General Info](#general-info)
 2. [Technologies](#technologies)
 3. [Installation](#installation)
-4. [Collaboration](#collaboration)
-5. [FAQs](#faqs)
 ### General Info
 ***
 At this time, you have a RESTful API server running at `http://127.0.0.1:8000`. It provides the following endpoints:
