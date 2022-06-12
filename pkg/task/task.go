@@ -17,7 +17,8 @@ type TaskRepository interface {
 	// DeleteGopher remove gopher with given ID
 	DeleteGopher(ID string) error
 	// UpdateGopher modify gopher with given ID and given new data
-	UpdateGopher(ID string, g *Task) error
+	// UpdateGopher(ID string, g *Task) error
+	UpdateGopher(ID string) (int, error)
 	// FetchGopherByID returns the gopher with given ID
 	FetchGopherByID(ID string) (*Task, error)
 }

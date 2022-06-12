@@ -137,15 +137,17 @@ func (a *api) removeTask(w http.ResponseWriter, r *http.Request) { //para borrar
 }
 
 func (a *api) modifyTask(w http.ResponseWriter, r *http.Request) { //para marcar una tarea como realizada
-	decoder := json.NewDecoder(r.Body)
-
-	var t task.Task
-	decoder.Decode(&t)
 
 	w.Header().Set("Content-Type", "application/json")
 
 	vars := mux.Vars(r)
-	a.repository.UpdateGopher(vars["ID"], &t)
+	var response = 0
+	response, _ = a.repository.UpdateGopher(vars["ID"])
 
-	w.WriteHeader(http.StatusNoContent)
+	if response == 1 { //si se recibe error se muestra BadRequest 404 (la tarea indicada no existe)
+		w.WriteHeader(http.StatusBadRequest)
+	} else {
+		w.WriteHeader(http.StatusNoContent)
+	}
+
 }

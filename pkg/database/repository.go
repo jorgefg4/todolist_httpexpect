@@ -50,12 +50,25 @@ func (r *taskRepository) DeleteGopher(ID string) error {
 	return nil
 }
 
-func (r *taskRepository) UpdateGopher(ID string, g *task.Task) error {
+// func (r *taskRepository) UpdateGopher(ID string, g *task.Task) error {
+// 	r.mtx.Lock()
+// 	defer r.mtx.Unlock()
+// 	g.Check = "si"
+// 	r.tasks[ID] = g
+// 	return nil
+// }
+func (r *taskRepository) UpdateGopher(ID string) (int, error) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
-	g.Check = "si"
-	r.tasks[ID] = g
-	return nil
+
+	for _, v := range r.tasks {
+		if v.ID == ID {
+			r.tasks[ID].Check = "si"
+			return 0, nil
+		}
+	}
+	return 1, nil
+
 }
 
 func (r *taskRepository) FetchGopherByID(ID string) (*task.Task, error) {
