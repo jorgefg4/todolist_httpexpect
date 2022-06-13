@@ -4,7 +4,13 @@ on:
   push:
     branches: [ actions ]
 
+  workflow_dispatch:
+
 jobs:
   build-test:
+    runs-on: ubuntu-latest
+
     steps:
-    -run: go test ./...
+    - uses: actions/checkout@v3
+    - name: Estamos ejecutando una prueba
+      run: go test ./...
