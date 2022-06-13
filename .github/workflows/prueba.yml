@@ -1,8 +1,8 @@
-name: Test 
+name: Tests 
 
 on:
   push:
-    branches: [ actions ]
+    branches: [ develop ]
 
   workflow_dispatch:
 
@@ -12,5 +12,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Estamos ejecutando una prueba
+    - name: Ejecución de tests del proyecto
       run: go test ./...
