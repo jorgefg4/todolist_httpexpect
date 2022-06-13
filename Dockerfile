@@ -1,19 +1,31 @@
-FROM golang:1.18.3 as development
+# Base image, tagged "build"
+FROM golang:1.18.3 as build
 
-# Spedify the working directory
-WORKDIR /app
+# Specify the source code directory (creates it)
+WORKDIR /src/app
+# We need to create this directory to alude to it
+RUN mkdir /bin/app
 
-# Install dependencies
+# Copy files and install dependencies
+COPY . /src/app
+# Apparently, these two are not copied with the prior command (investigate)
 COPY go.mod  go.sum ./
-
+# Downloads (and installs(?)) dependencies specified in go.mod (investigate)
 RUN go mod download
 
-# Copy files to the image
-COPY . .
+# Build into bin directory
+# -o tag indicates where to build into, next argument where to take packages
+RUN go build -o /bin/app ./cmd/todolist
 
+
+# Image to work (distroless, low weight)
+FROM gcr.io/distroless/base-debian11
+
+# Copy files from "build" to distroless image (only the compiled binaries so the image does not weight a lot)
+COPY --from=build /bin/app /
+ 
 # Port to listen to
 EXPOSE 8000
 
 # Start the app
-#CMD ["go run", "./cmd/todolist"]
-CMD go run ./cmd/todolist
+CMD ["/todolist"]
