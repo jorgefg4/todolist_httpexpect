@@ -1,4 +1,4 @@
-package models
+package task
 
 //Se incluyen tags para tranformar el struct desde json o hacia json
 type Task struct {
