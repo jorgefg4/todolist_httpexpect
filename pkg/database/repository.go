@@ -12,7 +12,7 @@ type taskRepository struct {
 	tasks map[string]*task.Task
 }
 
-func NewGopherRepository(tasks map[string]*task.Task) task.TaskRepository {
+func NewTaskRepository(tasks map[string]*task.Task) task.TaskRepository {
 	if tasks == nil {
 		tasks = make(map[string]*task.Task)
 	}
@@ -22,7 +22,7 @@ func NewGopherRepository(tasks map[string]*task.Task) task.TaskRepository {
 	}
 }
 
-func (r *taskRepository) CreateGopher(g *task.Task) error {
+func (r *taskRepository) CreateTask(g *task.Task) error {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 	if err := r.checkIfExists(g.ID); err != nil {
@@ -32,7 +32,7 @@ func (r *taskRepository) CreateGopher(g *task.Task) error {
 	return nil
 }
 
-func (r *taskRepository) FetchGophers() ([]*task.Task, error) {
+func (r *taskRepository) FetchTasks() ([]*task.Task, error) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 	values := make([]*task.Task, 0, len(r.tasks))
@@ -42,7 +42,7 @@ func (r *taskRepository) FetchGophers() ([]*task.Task, error) {
 	return values, nil
 }
 
-func (r *taskRepository) DeleteGopher(ID string) error {
+func (r *taskRepository) DeleteTask(ID string) error {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 	delete(r.tasks, ID)
@@ -50,14 +50,7 @@ func (r *taskRepository) DeleteGopher(ID string) error {
 	return nil
 }
 
-// func (r *taskRepository) UpdateGopher(ID string, g *task.Task) error {
-// 	r.mtx.Lock()
-// 	defer r.mtx.Unlock()
-// 	g.Check = "si"
-// 	r.tasks[ID] = g
-// 	return nil
-// }
-func (r *taskRepository) UpdateGopher(ID string) (int, error) {
+func (r *taskRepository) UpdateTask(ID string) (int, error) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 
@@ -71,7 +64,7 @@ func (r *taskRepository) UpdateGopher(ID string) (int, error) {
 
 }
 
-func (r *taskRepository) FetchGopherByID(ID string) (*task.Task, error) {
+func (r *taskRepository) FetchTaskByID(ID string) (*task.Task, error) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 

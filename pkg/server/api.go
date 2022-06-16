@@ -61,7 +61,7 @@ func New(repo task.TaskRepository) Server {
 	r.HandleFunc("/tasks/{ID:[a-zA-Z0-9_]+}", a.removeTask).Methods(http.MethodDelete)
 	r.HandleFunc("/tasks/{ID:[a-zA-Z0-9_]+}", a.modifyTask).Methods(http.MethodPut)
 	r.PathPrefix("/web/static/").Handler(http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static"))))
-	//r.HandleFunc("/gophers/{ID:[a-zA-Z0-9_]+}", a.fetchGopher).Methods(http.MethodGet)
+	//r.HandleFunc("/tasks/{ID:[a-zA-Z0-9_]+}", a.fetchTask).Methods(http.MethodGet)
 
 	a.router = r
 	return a
@@ -106,7 +106,7 @@ func render(w http.ResponseWriter, r *http.Request, tpl *template.Template, name
 
 //Handlers:
 func (a *api) fetchTasks(w http.ResponseWriter, r *http.Request) { //para mostrar todas las tareas
-	tasks, _ := a.repository.FetchGophers()
+	tasks, _ := a.repository.FetchTasks()
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(tasks)
@@ -122,7 +122,7 @@ func (a *api) addTask(w http.ResponseWriter, r *http.Request) { //para añadir n
 
 	numID++                    //primero incrementamos el ID
 	t.ID = strconv.Itoa(numID) //luego convierte el ID a string y se lo asigna a la nueva task
-	a.repository.CreateGopher(&t)
+	a.repository.CreateTask(&t)
 
 	w.WriteHeader(http.StatusCreated)
 
@@ -131,7 +131,7 @@ func (a *api) addTask(w http.ResponseWriter, r *http.Request) { //para añadir n
 
 func (a *api) removeTask(w http.ResponseWriter, r *http.Request) { //para borrar una tarea
 	vars := mux.Vars(r)
-	a.repository.DeleteGopher(vars["ID"])
+	a.repository.DeleteTask(vars["ID"])
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusNoContent)
 }
@@ -142,7 +142,7 @@ func (a *api) modifyTask(w http.ResponseWriter, r *http.Request) { //para marcar
 
 	vars := mux.Vars(r)
 	var response = 0
-	response, _ = a.repository.UpdateGopher(vars["ID"])
+	response, _ = a.repository.UpdateTask(vars["ID"])
 
 	if response == 1 { //si se recibe error se muestra BadRequest 404 (la tarea indicada no existe)
 		w.WriteHeader(http.StatusBadRequest)
