@@ -5,7 +5,7 @@ type Task struct {
 	ID   string `json:"ID"`
 	Name string `json:"name,omitempty"`
 	//Description string `json:"description,omitempty"`
-	Check string `json:"check,omitempty"`
+	Check bool `json:"check,omitempty"`
 }
 
 // Repository provides access to the gopher storage

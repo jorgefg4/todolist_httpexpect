@@ -17,6 +17,9 @@ import (
 )
 
 func main() {
+	database.GetConnection()
+	database.GetTasks()
+
 	fmt.Printf("Hello world!\n")
 
 	var tasks map[string]*task.Task

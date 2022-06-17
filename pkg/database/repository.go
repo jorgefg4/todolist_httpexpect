@@ -53,7 +53,7 @@ func (r *taskRepository) DeleteGopher(ID string) error {
 func (r *taskRepository) UpdateGopher(ID string, g *task.Task) error {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
-	g.Check = "si"
+	g.Check = true
 	r.tasks[ID] = g
 	return nil
 }
