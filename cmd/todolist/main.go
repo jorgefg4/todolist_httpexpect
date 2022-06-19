@@ -9,22 +9,36 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/jorgefg4/todolist/pkg/data"
 	"github.com/jorgefg4/todolist/pkg/database"
 	"github.com/jorgefg4/todolist/pkg/server"
-	"github.com/jorgefg4/todolist/pkg/task"
 	"github.com/rs/cors"
 )
 
 func main() {
-	database.GetConnection()
-	database.GetTasks()
+	_, err := database.GetConnection()
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	fmt.Printf("Hello world!\n")
+	tasks, err := database.GetAllTasks()
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	var tasks map[string]*task.Task
+	// Pruebas de conexion
+	database.CreateNewTask("4", "Regar mis cactuses", true)
+	if err != nil {
+		fmt.Println(err)
+	}
+	database.CreateNewTask("4", "Regar mis cactuses de nuevo", true)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Printf("Server running\n")
+
 	//if *withData {
-	tasks = data.Tasks
+	//tasks = data.Tasks
 
 	//Llamo al package "server" para crear un nuevo router
 	repo := database.NewGopherRepository(tasks)
