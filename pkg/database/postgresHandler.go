@@ -38,23 +38,23 @@ func GetConnection() (*sql.DB, error) {
 
 // Retrieves all tasks from the database and returns a map with the tasks formatted
 // for the application to use (type of task,Task)
-func GetAllTasks() (map[string]*task.Task, error) {
+func GetAllTasks() (map[int]*task.Task, error) {
 	tasks, err := models.Tasks().All(ctx, db)
 	if err != nil {
 		return nil, err
 	}
 
-	tasksMap := make(map[string]*task.Task)
+	tasksMap := make(map[int]*task.Task)
 
 	for _, databaseTask := range tasks {
 		id := databaseTask.ID
 		name := databaseTask.Name
-		check_valid := databaseTask.CheckValid
+		check := databaseTask.Check
 
 		newTask := task.Task{
 			ID:    id,
 			Name:  name,
-			Check: check_valid,
+			Check: check,
 		}
 
 		tasksMap[id] = &newTask
@@ -65,12 +65,10 @@ func GetAllTasks() (map[string]*task.Task, error) {
 
 // Create a new task in the database
 // Should use upsert instead of insert in the future
-func CreateNewTask(id string, name string, check bool) error {
+func CreateNewTask(name string) error {
 	var newTask models.Task
 
-	newTask.ID = id
 	newTask.Name = name
-	newTask.CheckValid = check
 
 	err := newTask.Insert(ctx, db, boil.Infer())
 
@@ -85,4 +83,5 @@ func DeleteTask(id string) error {
 func ModifyTask(id string, name string, check bool) error {
 	return error
 }
+
 */

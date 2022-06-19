@@ -26,11 +26,11 @@ func main() {
 	}
 
 	// Pruebas de conexion
-	database.CreateNewTask("4", "Regar mis cactuses", true)
+	database.CreateNewTask("Regar mis cactuses")
 	if err != nil {
 		fmt.Println(err)
 	}
-	database.CreateNewTask("4", "Regar mis cactuses de nuevo", true)
+	database.CreateNewTask("Regar mis cactuses de nuevo")
 	if err != nil {
 		fmt.Println(err)
 	}

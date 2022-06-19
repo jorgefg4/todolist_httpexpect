@@ -5,10 +5,9 @@ import (
 	"encoding/json"
 	"html/template"
 	"net/http"
+	"strconv"
 
 	"fmt"
-
-	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/jorgefg4/todolist/pkg/task"
@@ -120,8 +119,8 @@ func (a *api) addTask(w http.ResponseWriter, r *http.Request) { //para añadir n
 
 	w.Header().Set("Content-Type", "application/json")
 
-	numID++                    //primero incrementamos el ID
-	t.ID = strconv.Itoa(numID) //luego convierte el ID a string y se lo asigna a la nueva task
+	numID++ //primero incrementamos el ID
+	t.ID = numID
 	a.repository.CreateGopher(&t)
 
 	w.WriteHeader(http.StatusCreated)
@@ -131,7 +130,8 @@ func (a *api) addTask(w http.ResponseWriter, r *http.Request) { //para añadir n
 
 func (a *api) removeTask(w http.ResponseWriter, r *http.Request) { //para borrar una tarea
 	vars := mux.Vars(r)
-	a.repository.DeleteGopher(vars["ID"])
+	id, _ := strconv.Atoi(vars["ID"]) //convierto el ID de string a int
+	a.repository.DeleteGopher(id)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusNoContent)
 }
@@ -145,7 +145,8 @@ func (a *api) modifyTask(w http.ResponseWriter, r *http.Request) { //para marcar
 	w.Header().Set("Content-Type", "application/json")
 
 	vars := mux.Vars(r)
-	a.repository.UpdateGopher(vars["ID"], &t)
+	id, _ := strconv.Atoi(vars["ID"]) //convierto el ID de string a int
+	a.repository.UpdateGopher(id, &t)
 
 	w.WriteHeader(http.StatusNoContent)
 }
