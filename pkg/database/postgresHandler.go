@@ -75,11 +75,15 @@ func CreateNewTask(name string) error {
 	return err
 }
 
-/*
-func DeleteTask(id string) error {
-	return error
+func DeleteTask(id int) error {
+	task, err := models.FindTask(ctx, db, id)
+
+	_, err = task.Delete(ctx, db)
+
+	return err
 }
 
+/*
 func ModifyTask(id string, name string, check bool) error {
 	return error
 }

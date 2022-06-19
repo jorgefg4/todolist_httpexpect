@@ -29,15 +29,15 @@ func NewService() server.Server {
 		fmt.Println(err)
 	}
 
-	// Pruebas de conexion
-	database.CreateNewTask("Regar mis cactuses")
-	if err != nil {
-		fmt.Println(err)
-	}
-	database.CreateNewTask("Regar mis cactuses de nuevo")
-	if err != nil {
-		fmt.Println(err)
-	}
+	// // Pruebas de conexion
+	// database.CreateNewTask("Regar mis cactuses")
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// database.CreateNewTask("Regar mis cactuses de nuevo")
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
 
 	tasks, err := database.GetAllTasks()
 	if err != nil {
