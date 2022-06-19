@@ -12,13 +12,13 @@ import (
 	"github.com/jorgefg4/todolist/pkg/task"
 )
 
-func TestFetchGophers(t *testing.T) {
+func TestFetchTasks(t *testing.T) {
 	req, err := http.NewRequest("GET", "/tasks", nil)
 	if err != nil {
 		t.Fatalf("could not created request: %v", err)
 	}
 
-	repo := database.NewGopherRepository(data.Tasks)
+	repo := database.NewTaskRepository(data.Tasks)
 	s := New(repo)
 
 	rec := httptest.NewRecorder() //con el paquete httptest podemos generar el http.ResponseWriter
