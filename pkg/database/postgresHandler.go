@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/jorgefg4/todolist/pkg/task"
+	task "github.com/jorgefg4/todolist/pkg/task"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 
 	"github.com/jorgefg4/todolist/models"

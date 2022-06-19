@@ -1,52 +1,81 @@
 package main
 
 import (
-	// "ToDoList/data"
-	// "ToDoList/database"
-	// "ToDoList/server"
-	// "ToDoList/task"
 	"fmt"
 	"log"
 	"net/http"
 
-	"github.com/jorgefg4/todolist/pkg/database"
-	"github.com/jorgefg4/todolist/pkg/server"
+	//_ "github.com/mattn/go-sqlite3"
+
+	"github.com/jorgefg4/todolist/pkg/service"
+	_ "github.com/lib/pq"
 	"github.com/rs/cors"
 )
 
 func main() {
-	_, err := database.GetConnection()
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	tasks, err := database.GetAllTasks()
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	// Pruebas de conexion
-	database.CreateNewTask("Regar mis cactuses")
-	if err != nil {
-		fmt.Println(err)
-	}
-	database.CreateNewTask("Regar mis cactuses de nuevo")
-	if err != nil {
-		fmt.Println(err)
-	}
-
 	fmt.Printf("Server running\n")
 
-	//if *withData {
-	//tasks = data.Tasks
+	// // Get a handle to the SQLite database
+	// db, err := sql.Open("postgres", `dbname=postgres host=localhost user=postgres password=gatomagico4444`)
+	// db, err := sql.Open("postgres", "postgresql://postgres:gatomagico4444@localhost/postgres?sslmode=disable")
 
-	//Llamo al package "server" para crear un nuevo router
-	repo := database.NewGopherRepository(tasks)
-	s := server.New(repo)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// defer db.Close()
+	// // Configure SQLBoiler to use the sqlite database
+	// boil.SetDB(db)
+	// ctx := context.Background()
+	// tasks, _ := models.Tasks().All(ctx, db)
+
+	// for _, task := range tasks {
+	// 	fmt.Println(task.Name)
+	// }
+
+	// id := 3
+	// task, err := models.FindTask(ctx, db, id)
+	// if err != nil {
+	// } // handle err
+	// _, err = task.Delete(ctx, db)
+	// if err != nil {
+	// } // handle err
+
+	// t := &models.Task{Name: "prueba29"}
+	// err = t.Insert(context.Background(), db, boil.Infer())
+	// fmt.Println("task name:", t.Name)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// t1 := &models.Task{Name: "prueba27"}
+	// err = t1.Insert(context.Background(), db, boil.Infer())
+	// fmt.Println("task name:", t1.Name)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// t2 := &models.Task{Name: "prueba28"}
+	// err = t2.Insert(context.Background(), db, boil.Infer())
+	// fmt.Println("task name:", t2.Name)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// var tasks map[string]*task.Task
+	// //if *withData {
+	// tasks = data.Tasks
+
+	// //Llamo al package "server" para crear un nuevo router
+	// repo := database.NewGopherRepository(tasks)
+	// s := server.New(repo)
+
+	//Llamo a la capa Service para crear el Server
+	s := service.NewService()
 
 	//Cabeceras CORS:
 	handler := cors.New(cors.Options{AllowedMethods: []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"}}).Handler(s.Router())
-	log.Fatal(http.ListenAndServe(":8000", handler))
+	log.Fatal(http.ListenAndServe(":8000", handler)) //Se pone a escuchar en el puerto TCP 8000 de localhost y llama al handler
 
 	//http.ListenAndServe(":8000", s.Router()) //Se pone a escuchar en el puerto TCP 8000 de localhost y llama al handler
 

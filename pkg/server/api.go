@@ -3,11 +3,10 @@ package server
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
-
-	"fmt"
 
 	"github.com/gorilla/mux"
 	"github.com/jorgefg4/todolist/pkg/task"
@@ -60,7 +59,7 @@ func New(repo task.TaskRepository) Server {
 	r.HandleFunc("/tasks/{ID:[a-zA-Z0-9_]+}", a.removeTask).Methods(http.MethodDelete)
 	r.HandleFunc("/tasks/{ID:[a-zA-Z0-9_]+}", a.modifyTask).Methods(http.MethodPut)
 	r.PathPrefix("/web/static/").Handler(http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static"))))
-	//r.HandleFunc("/gophers/{ID:[a-zA-Z0-9_]+}", a.fetchGopher).Methods(http.MethodGet)
+	//r.HandleFunc("/tasks/{ID:[a-zA-Z0-9_]+}", a.fetchTask).Methods(http.MethodGet)
 
 	a.router = r
 	return a
@@ -105,7 +104,7 @@ func render(w http.ResponseWriter, r *http.Request, tpl *template.Template, name
 
 //Handlers:
 func (a *api) fetchTasks(w http.ResponseWriter, r *http.Request) { //para mostrar todas las tareas
-	tasks, _ := a.repository.FetchGophers()
+	tasks, _ := a.repository.FetchTasks()
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(tasks)
@@ -121,7 +120,7 @@ func (a *api) addTask(w http.ResponseWriter, r *http.Request) { //para añadir n
 
 	numID++ //primero incrementamos el ID
 	t.ID = numID
-	a.repository.CreateGopher(&t)
+	a.repository.CreateTask(&t)
 
 	w.WriteHeader(http.StatusCreated)
 
@@ -131,22 +130,24 @@ func (a *api) addTask(w http.ResponseWriter, r *http.Request) { //para añadir n
 func (a *api) removeTask(w http.ResponseWriter, r *http.Request) { //para borrar una tarea
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["ID"]) //convierto el ID de string a int
-	a.repository.DeleteGopher(id)
+	a.repository.DeleteTask(id)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusNoContent)
 }
 
 func (a *api) modifyTask(w http.ResponseWriter, r *http.Request) { //para marcar una tarea como realizada
-	decoder := json.NewDecoder(r.Body)
-
-	var t task.Task
-	decoder.Decode(&t)
 
 	w.Header().Set("Content-Type", "application/json")
 
 	vars := mux.Vars(r)
+	var response = 0
 	id, _ := strconv.Atoi(vars["ID"]) //convierto el ID de string a int
-	a.repository.UpdateGopher(id, &t)
+	response, _ = a.repository.UpdateTask(id)
 
-	w.WriteHeader(http.StatusNoContent)
+	if response == 1 { //si se recibe error se muestra BadRequest 404 (la tarea indicada no existe)
+		w.WriteHeader(http.StatusBadRequest)
+	} else {
+		w.WriteHeader(http.StatusNoContent)
+	}
+
 }
