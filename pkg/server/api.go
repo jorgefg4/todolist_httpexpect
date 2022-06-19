@@ -3,11 +3,9 @@ package server
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"net/http"
-
-	"fmt"
-
 	"strconv"
 
 	"github.com/gorilla/mux"
@@ -120,8 +118,8 @@ func (a *api) addTask(w http.ResponseWriter, r *http.Request) { //para añadir n
 
 	w.Header().Set("Content-Type", "application/json")
 
-	numID++                    //primero incrementamos el ID
-	t.ID = strconv.Itoa(numID) //luego convierte el ID a string y se lo asigna a la nueva task
+	numID++ //primero incrementamos el ID
+	t.ID = numID
 	a.repository.CreateGopher(&t)
 
 	w.WriteHeader(http.StatusCreated)
@@ -131,7 +129,8 @@ func (a *api) addTask(w http.ResponseWriter, r *http.Request) { //para añadir n
 
 func (a *api) removeTask(w http.ResponseWriter, r *http.Request) { //para borrar una tarea
 	vars := mux.Vars(r)
-	a.repository.DeleteGopher(vars["ID"])
+	id, _ := strconv.Atoi(vars["ID"]) //convierto el ID de string a int
+	a.repository.DeleteGopher(id)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusNoContent)
 }
@@ -142,7 +141,8 @@ func (a *api) modifyTask(w http.ResponseWriter, r *http.Request) { //para marcar
 
 	vars := mux.Vars(r)
 	var response = 0
-	response, _ = a.repository.UpdateGopher(vars["ID"])
+	id, _ := strconv.Atoi(vars["ID"]) //convierto el ID de string a int
+	response, _ = a.repository.UpdateGopher(id)
 
 	if response == 1 { //si se recibe error se muestra BadRequest 404 (la tarea indicada no existe)
 		w.WriteHeader(http.StatusBadRequest)

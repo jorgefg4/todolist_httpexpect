@@ -9,12 +9,12 @@ import (
 
 type taskRepository struct {
 	mtx   sync.RWMutex
-	tasks map[string]*task.Task
+	tasks map[int]*task.Task
 }
 
-func NewGopherRepository(tasks map[string]*task.Task) task.TaskRepository {
+func NewGopherRepository(tasks map[int]*task.Task) task.TaskRepository {
 	if tasks == nil {
-		tasks = make(map[string]*task.Task)
+		tasks = make(map[int]*task.Task)
 	}
 
 	return &taskRepository{
@@ -42,7 +42,7 @@ func (r *taskRepository) FetchGophers() ([]*task.Task, error) {
 	return values, nil
 }
 
-func (r *taskRepository) DeleteGopher(ID string) error {
+func (r *taskRepository) DeleteGopher(ID int) error {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 	delete(r.tasks, ID)
@@ -50,20 +50,20 @@ func (r *taskRepository) DeleteGopher(ID string) error {
 	return nil
 }
 
-// func (r *taskRepository) UpdateGopher(ID string, g *task.Task) error {
+// func (r *taskRepository) UpdateGopher(ID int, g *task.Task) error {
 // 	r.mtx.Lock()
 // 	defer r.mtx.Unlock()
 // 	g.Check = "si"
 // 	r.tasks[ID] = g
 // 	return nil
 // }
-func (r *taskRepository) UpdateGopher(ID string) (int, error) {
+func (r *taskRepository) UpdateGopher(ID int) (int, error) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 
 	for _, v := range r.tasks {
 		if v.ID == ID {
-			r.tasks[ID].Check = "si"
+			r.tasks[ID].Check = true
 			return 0, nil
 		}
 	}
@@ -71,7 +71,7 @@ func (r *taskRepository) UpdateGopher(ID string) (int, error) {
 
 }
 
-func (r *taskRepository) FetchGopherByID(ID string) (*task.Task, error) {
+func (r *taskRepository) FetchGopherByID(ID int) (*task.Task, error) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 
@@ -81,13 +81,13 @@ func (r *taskRepository) FetchGopherByID(ID string) (*task.Task, error) {
 		}
 	}
 
-	return nil, fmt.Errorf("The ID %s doesn't exist", ID)
+	return nil, fmt.Errorf("The ID %d doesn't exist", ID)
 }
 
-func (r *taskRepository) checkIfExists(ID string) error {
+func (r *taskRepository) checkIfExists(ID int) error {
 	for _, v := range r.tasks {
 		if v.ID == ID {
-			return fmt.Errorf("The task %s is already exist", ID)
+			return fmt.Errorf("The task %d is already exist", ID)
 		}
 	}
 
