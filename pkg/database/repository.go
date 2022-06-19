@@ -74,12 +74,13 @@ func (r *taskRepository) UpdateTask(ID int) (int, error) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 
-	for _, v := range r.tasks {
-		if v.ID == ID {
-			r.tasks[ID].Check = true
-			return 0, nil
-		}
-	}
+	ModifyTask(ID)
+	// for _, v := range r.tasks {
+	// 	if v.ID == ID {
+	// 		r.tasks[ID].Check = true
+	// 		return 0, nil
+	// 	}
+	// }
 	return 1, nil
 
 }

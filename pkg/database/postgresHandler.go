@@ -83,9 +83,12 @@ func DeleteTask(id int) error {
 	return err
 }
 
-/*
-func ModifyTask(id string, name string, check bool) error {
-	return error
-}
+func ModifyTask(id int) error {
+	task, err := models.FindTask(ctx, db, id)
 
-*/
+	task.Check = true
+
+	_, err = task.Update(ctx, db, boil.Infer())
+
+	return err
+}
