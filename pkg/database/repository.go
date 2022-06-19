@@ -12,7 +12,7 @@ type taskRepository struct {
 	tasks map[int]*task.Task
 }
 
-func NewGopherRepository(tasks map[int]*task.Task) task.TaskRepository {
+func NewTaskRepository(tasks map[int]*task.Task) task.TaskRepository {
 	if tasks == nil {
 		tasks = make(map[int]*task.Task)
 	}
@@ -44,7 +44,7 @@ func (r *taskRepository) FetchTasks() ([]*task.Task, error) {
 	return values, nil
 }
 
-func (r *taskRepository) DeleteGopher(ID int) error {
+func (r *taskRepository) DeleteTask(ID int) error {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 	delete(r.tasks, ID)
@@ -59,7 +59,7 @@ func (r *taskRepository) DeleteGopher(ID int) error {
 // 	r.tasks[ID] = g
 // 	return nil
 // }
-func (r *taskRepository) UpdateGopher(ID int) (int, error) {
+func (r *taskRepository) UpdateTask(ID int) (int, error) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 
@@ -73,7 +73,7 @@ func (r *taskRepository) UpdateGopher(ID int) (int, error) {
 
 }
 
-func (r *taskRepository) FetchGopherByID(ID int) (*task.Task, error) {
+func (r *taskRepository) FetchTaskByID(ID int) (*task.Task, error) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 

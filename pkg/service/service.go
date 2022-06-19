@@ -31,7 +31,7 @@ func NewService() server.Server {
 	}
 
 	//Llamo al package "server" para crear un nuevo router
-	repo := database.NewGopherRepository(tasks)
+	repo := database.NewTaskRepository(tasks)
 	s := server.New(repo)
 
 	return s
