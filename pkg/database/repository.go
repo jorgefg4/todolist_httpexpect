@@ -63,25 +63,22 @@ func (r *taskRepository) DeleteTask(ID int) error {
 	return nil
 }
 
-// func (r *taskRepository) UpdateGopher(ID int, g *task.Task) error {
-// 	r.mtx.Lock()
-// 	defer r.mtx.Unlock()
-// 	g.Check = "si"
-// 	r.tasks[ID] = g
-// 	return nil
-// }
 func (r *taskRepository) UpdateTask(ID int) (int, error) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 
-	ModifyTask(ID)
+	err := ModifyTask(ID)
 	// for _, v := range r.tasks {
 	// 	if v.ID == ID {
 	// 		r.tasks[ID].Check = true
 	// 		return 0, nil
 	// 	}
 	// }
-	return 1, nil
+	if err != nil {
+		return 1, err
+	} else {
+		return 0, nil
+	}
 
 }
 
