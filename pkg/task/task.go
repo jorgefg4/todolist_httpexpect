@@ -8,7 +8,7 @@ type Task struct {
 	Check bool `json:"check,omitempty"`
 }
 
-// Repository provides access to the gopher storage
+// Repository provides access to the task storage
 type TaskRepository interface {
 	// CreateGopher saves a given gopher
 	CreateGopher(g *Task) error

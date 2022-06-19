@@ -59,7 +59,7 @@ func New(repo task.TaskRepository) Server {
 	r.HandleFunc("/tasks/{ID:[a-zA-Z0-9_]+}", a.removeTask).Methods(http.MethodDelete)
 	r.HandleFunc("/tasks/{ID:[a-zA-Z0-9_]+}", a.modifyTask).Methods(http.MethodPut)
 	r.PathPrefix("/web/static/").Handler(http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static"))))
-	//r.HandleFunc("/gophers/{ID:[a-zA-Z0-9_]+}", a.fetchGopher).Methods(http.MethodGet)
+	//r.HandleFunc("/tasks/{ID:[a-zA-Z0-9_]+}", a.fetchTask).Methods(http.MethodGet)
 
 	a.router = r
 	return a
@@ -104,7 +104,7 @@ func render(w http.ResponseWriter, r *http.Request, tpl *template.Template, name
 
 //Handlers:
 func (a *api) fetchTasks(w http.ResponseWriter, r *http.Request) { //para mostrar todas las tareas
-	tasks, _ := a.repository.FetchGophers()
+	tasks, _ := a.repository.FetchTasks()
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(tasks)

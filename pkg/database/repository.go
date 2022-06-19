@@ -22,17 +22,19 @@ func NewGopherRepository(tasks map[int]*task.Task) task.TaskRepository {
 	}
 }
 
-func (r *taskRepository) CreateGopher(g *task.Task) error {
+func (r *taskRepository) CreateTask(g *task.Task) error {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 	if err := r.checkIfExists(g.ID); err != nil {
 		return err
 	}
+	g.Check = false
 	r.tasks[g.ID] = g
+
 	return nil
 }
 
-func (r *taskRepository) FetchGophers() ([]*task.Task, error) {
+func (r *taskRepository) FetchTasks() ([]*task.Task, error) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 	values := make([]*task.Task, 0, len(r.tasks))
