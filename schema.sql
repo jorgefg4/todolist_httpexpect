@@ -9,5 +9,5 @@ create table tasks (
 
 
 
-insert into tasks (id, name, check) values ('1', 'Prueba1', false);
-insert into tasks (id, name, check) values ('2', 'Prueba2', true);
+-- insert into tasks (id, name, check) values ('1', 'Prueba1', false);
+-- insert into tasks (id, name, check) values ('2', 'Prueba2', true);

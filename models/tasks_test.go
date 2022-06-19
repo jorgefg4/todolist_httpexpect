@@ -568,7 +568,7 @@ func testTasksSelect(t *testing.T) {
 }
 
 var (
-	taskDBTypes = map[string]string{`ID`: `character varying`, `Name`: `character varying`, `CheckValid`: `boolean`}
+	taskDBTypes = map[string]string{`ID`: `integer`, `Name`: `character varying`, `Check`: `boolean`}
 	_           = bytes.MinRead
 )
 

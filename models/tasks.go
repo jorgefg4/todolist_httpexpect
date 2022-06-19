@@ -23,35 +23,58 @@ import (
 
 // Task is an object representing the database table.
 type Task struct {
-	ID         string `boil:"id" json:"id" toml:"id" yaml:"id"`
-	Name       string `boil:"name" json:"name" toml:"name" yaml:"name"`
-	CheckValid bool   `boil:"check_valid" json:"check_valid" toml:"check_valid" yaml:"check_valid"`
+	ID    int    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	Name  string `boil:"name" json:"name" toml:"name" yaml:"name"`
+	Check bool   `boil:"check" json:"check" toml:"check" yaml:"check"`
 
 	R *taskR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L taskL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var TaskColumns = struct {
-	ID         string
-	Name       string
-	CheckValid string
+	ID    string
+	Name  string
+	Check string
 }{
-	ID:         "id",
-	Name:       "name",
-	CheckValid: "check_valid",
+	ID:    "id",
+	Name:  "name",
+	Check: "check",
 }
 
 var TaskTableColumns = struct {
-	ID         string
-	Name       string
-	CheckValid string
+	ID    string
+	Name  string
+	Check string
 }{
-	ID:         "tasks.id",
-	Name:       "tasks.name",
-	CheckValid: "tasks.check_valid",
+	ID:    "tasks.id",
+	Name:  "tasks.name",
+	Check: "tasks.check",
 }
 
 // Generated where
+
+type whereHelperint struct{ field string }
+
+func (w whereHelperint) EQ(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
+func (w whereHelperint) NEQ(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
+func (w whereHelperint) LT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
+func (w whereHelperint) LTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
+func (w whereHelperint) GT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
+func (w whereHelperint) GTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
+func (w whereHelperint) IN(slice []int) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
+}
+func (w whereHelperint) NIN(slice []int) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
+}
 
 type whereHelperstring struct{ field string }
 
@@ -86,13 +109,13 @@ func (w whereHelperbool) GT(x bool) qm.QueryMod  { return qmhelper.Where(w.field
 func (w whereHelperbool) GTE(x bool) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
 
 var TaskWhere = struct {
-	ID         whereHelperstring
-	Name       whereHelperstring
-	CheckValid whereHelperbool
+	ID    whereHelperint
+	Name  whereHelperstring
+	Check whereHelperbool
 }{
-	ID:         whereHelperstring{field: "\"tasks\".\"id\""},
-	Name:       whereHelperstring{field: "\"tasks\".\"name\""},
-	CheckValid: whereHelperbool{field: "\"tasks\".\"check_valid\""},
+	ID:    whereHelperint{field: "\"tasks\".\"id\""},
+	Name:  whereHelperstring{field: "\"tasks\".\"name\""},
+	Check: whereHelperbool{field: "\"tasks\".\"check\""},
 }
 
 // TaskRels is where relationship names are stored.
@@ -112,9 +135,9 @@ func (*taskR) NewStruct() *taskR {
 type taskL struct{}
 
 var (
-	taskAllColumns            = []string{"id", "name", "check_valid"}
-	taskColumnsWithoutDefault = []string{"id", "name", "check_valid"}
-	taskColumnsWithDefault    = []string{}
+	taskAllColumns            = []string{"id", "name", "check"}
+	taskColumnsWithoutDefault = []string{"name"}
+	taskColumnsWithDefault    = []string{"id", "check"}
 	taskPrimaryKeyColumns     = []string{"id"}
 	taskGeneratedColumns      = []string{}
 )
@@ -410,7 +433,7 @@ func Tasks(mods ...qm.QueryMod) taskQuery {
 
 // FindTask retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindTask(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*Task, error) {
+func FindTask(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols ...string) (*Task, error) {
 	taskObj := &Task{}
 
 	sel := "*"
@@ -909,7 +932,7 @@ func (o *TaskSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) er
 }
 
 // TaskExists checks if the Task row exists.
-func TaskExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool, error) {
+func TaskExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"tasks\" where \"id\"=$1 limit 1)"
 
