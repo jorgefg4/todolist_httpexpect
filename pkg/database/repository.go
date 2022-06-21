@@ -10,6 +10,7 @@ import (
 type taskRepository struct {
 	mtx   sync.RWMutex
 	tasks map[int]*task.Task
+	db    DatabaseHandler
 }
 
 func NewTaskRepository(tasks map[int]*task.Task) task.TaskRepository {
@@ -25,11 +26,12 @@ func NewTaskRepository(tasks map[int]*task.Task) task.TaskRepository {
 func (r *taskRepository) CreateTask(g *task.Task) error {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
-	if err := r.checkIfExists(g.ID); err != nil {
-		return err
-	}
-	g.Check = false
-	r.tasks[g.ID] = g
+	r.db.CreateNewTask(g.Name) //llama a la función de añadir task de postgresHandler
+	// if err := r.checkIfExists(g.ID); err != nil {
+	// 	return err
+	// }
+	// g.Check = false
+	// r.tasks[g.ID] = g
 
 	return nil
 }
@@ -37,6 +39,14 @@ func (r *taskRepository) CreateTask(g *task.Task) error {
 func (r *taskRepository) FetchTasks() ([]*task.Task, error) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
+
+	//Obtengo tasks de la BD y actualizo el map de tasks del repository
+	tasks, err := r.db.GetAllTasks()
+	r.tasks = tasks
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	values := make([]*task.Task, 0, len(r.tasks))
 	for _, value := range r.tasks {
 		values = append(values, value)
@@ -47,29 +57,29 @@ func (r *taskRepository) FetchTasks() ([]*task.Task, error) {
 func (r *taskRepository) DeleteTask(ID int) error {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
-	delete(r.tasks, ID)
+
+	r.db.DeleteTask(ID) //llamada a la funcion de borrar de postgresHandler
+	//delete(r.tasks, ID)
 
 	return nil
 }
 
-// func (r *taskRepository) UpdateGopher(ID int, g *task.Task) error {
-// 	r.mtx.Lock()
-// 	defer r.mtx.Unlock()
-// 	g.Check = "si"
-// 	r.tasks[ID] = g
-// 	return nil
-// }
 func (r *taskRepository) UpdateTask(ID int) (int, error) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 
-	for _, v := range r.tasks {
-		if v.ID == ID {
-			r.tasks[ID].Check = true
-			return 0, nil
-		}
+	err := r.db.ModifyTask(ID)
+	// for _, v := range r.tasks {
+	// 	if v.ID == ID {
+	// 		r.tasks[ID].Check = true
+	// 		return 0, nil
+	// 	}
+	// }
+	if err != nil {
+		return 1, err
+	} else {
+		return 0, nil
 	}
-	return 1, nil
 
 }
 

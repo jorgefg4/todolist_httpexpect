@@ -34,15 +34,17 @@ func (svc *Service) NewServer() server.Server {
 		fmt.Println(err)
 	}
 
-	// Pruebas de conexion
-	svc.DB.CreateNewTask("Regar mis cactuses")
-	if err != nil {
-		fmt.Println(err)
-	}
-	svc.DB.CreateNewTask("Regar mis cactuses de nuevo")
-	if err != nil {
-		fmt.Println(err)
-	}
+	/*
+		// Pruebas de conexion
+		svc.DB.CreateNewTask("Regar mis cactuses")
+		if err != nil {
+			fmt.Println(err)
+		}
+		svc.DB.CreateNewTask("Regar mis cactuses de nuevo")
+		if err != nil {
+			fmt.Println(err)
+		}
+	*/
 
 	tasks, err := svc.DB.GetAllTasks()
 	if err != nil {

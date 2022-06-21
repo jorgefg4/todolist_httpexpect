@@ -15,6 +15,7 @@ import (
 
 // Type to access a Postgresql database
 // Implements DatabaseHandler
+// TODO agregar como campos los datos de conexion sql
 type PostgresHandler struct {
 }
 
@@ -81,13 +82,22 @@ func (handler *PostgresHandler) CreateNewTask(name string) error {
 	return err
 }
 
-/*
-func DeleteTask(id string) error {
-	return error
+// Delete a given task from the database
+func (handler *PostgresHandler) DeleteTask(id int) error {
+	task, err := models.FindTask(ctx, db, id)
+
+	_, err = task.Delete(ctx, db)
+
+	return err
 }
 
-func ModifyTask(id string, name string, check bool) error {
-	return error
-}
+// Modifies a given task from the database
+func (handler *PostgresHandler) ModifyTask(id int) error {
+	task, err := models.FindTask(ctx, db, id)
 
-*/
+	task.Check = true
+
+	_, err = task.Update(ctx, db, boil.Infer())
+
+	return err
+}

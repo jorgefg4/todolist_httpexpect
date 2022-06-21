@@ -63,9 +63,9 @@ var _webTemplatesIndexHtml = []byte(`<!DOCTYPE html>
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-        <link rel="stylesheet" href="/web/static/style.css">
-        <link rel="stylesheet" href="/web/static/navigation_bar.css">
-        <link rel="stylesheet" href="/web/static/todolist.css">
+        <link rel="stylesheet" href="web/static/style.css">
+        <link rel="stylesheet" href="web/static/navigation_bar.css">
+        <link rel="stylesheet" href="web/static/todolist.css">
     </head>
 
 
@@ -86,9 +86,8 @@ var _webTemplatesIndexHtml = []byte(`<!DOCTYPE html>
               </div>
           
               <ul id="myUL">
-                <li class="nametask">Hit the gym</li>
-                <li  class="nametask" class="checked">Pay bills</li>
-                <li class="checked">Pay bills2</li>
+                <li onclick="checkTask(this)" class="nametask">Hit the gym</li>
+                <li  onclick="checkTask(this)" class="nametask">Pay bills</li>
               </ul>
         </div>
 
@@ -127,15 +126,33 @@ var _webTemplatesIndexHtml = []byte(`<!DOCTYPE html>
           }
         }
         
-        // Add a "checked" symbol when clicking on a list item
-        var list = document.querySelector('ul');
-        list.addEventListener('click', function(ev) {
-          if (ev.target.tagName === 'LI') {
-            ev.target.classList.toggle('checked');
-          }
-        }, false);
+        ///////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////
         
-       
+		
+		//Add a "checked" symbol when clicking on a list item and send the PUT request to the backend
+		function checkTask(element) {
+			element.className="checked";
+			
+			// solicitud a la API REST vía método PUT
+            fetch(url + "/tasks/"+ element.id, {
+            method: 'PUT',
+            
+            })
+            // promesas encadenadas
+            .then(res => res.text())
+            // procesamiento de la respuesta
+            .then(text => {
+                // depuración en consola del navegador
+                console.log(text);
+            })
+            // procesamiento de errores
+            .catch(err => {
+                // depuración en consola del navegador
+                console.error(err);
+            });
+			 
+		}
         
         /////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////
@@ -163,7 +180,13 @@ var _webTemplatesIndexHtml = []byte(`<!DOCTYPE html>
                     var t = document.createTextNode(nombre);
                     li.appendChild(t);
                     li.id = json[i].ID; //le asigna a cada etiqueta HTML <li> el ID de la task
-                      
+					
+					if(json[i].check == true){
+						li.className="checked";
+					}
+					li.setAttribute("onclick","checkTask(this)");
+					
+					
                     var span = document.createElement("SPAN");
                     var txt = document.createTextNode("\u00D7");
                     span.className = "close";
@@ -182,6 +205,7 @@ var _webTemplatesIndexHtml = []byte(`<!DOCTYPE html>
                 }
             
             })
+			
             
         }	 
         
@@ -209,8 +233,7 @@ var _webTemplatesIndexHtml = []byte(`<!DOCTYPE html>
             
             // se incluyen en el cuerpo del mensaje los datos del nuevo libro a registrar 
             body: JSON.stringify({            
-                name: taskname,
-                check : "no"
+                name: taskname
             })
             })
             // promesas encadenadas
@@ -258,7 +281,7 @@ var _webTemplatesIndexHtml = []byte(`<!DOCTYPE html>
         ////////////////////////////
 
         function deleteinbackend(id){   //para borrar la task en el backend
-            console.log(id);
+            
             // solicitud a la API REST vía método POST
             fetch(url + "/tasks/"+id, {
             method: 'DELETE',
