@@ -13,13 +13,18 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// Type to access a Postgresql database
+// Implements DatabaseHandler
+type PostgresHandler struct {
+}
+
 const conString string = "postgresql://postgres:gatomagico4444@localhost/postgres?sslmode=disable"
 
 var db *sql.DB
 var ctx context.Context
 
 // Stablish a connection with the database
-func GetConnection() (*sql.DB, error) {
+func (handler *PostgresHandler) GetConnection() (*sql.DB, error) {
 	var err error
 	db, err = sql.Open("postgres", conString)
 	if err != nil {
@@ -31,6 +36,7 @@ func GetConnection() (*sql.DB, error) {
 		return nil, err
 	}
 
+	// TODO definir el contexto
 	ctx = context.Background()
 
 	return db, err
@@ -38,7 +44,7 @@ func GetConnection() (*sql.DB, error) {
 
 // Retrieves all tasks from the database and returns a map with the tasks formatted
 // for the application to use (type of task,Task)
-func GetAllTasks() (map[int]*task.Task, error) {
+func (handler *PostgresHandler) GetAllTasks() (map[int]*task.Task, error) {
 	tasks, err := models.Tasks().All(ctx, db)
 	if err != nil {
 		return nil, err
@@ -65,7 +71,7 @@ func GetAllTasks() (map[int]*task.Task, error) {
 
 // Create a new task in the database
 // Should use upsert instead of insert in the future
-func CreateNewTask(name string) error {
+func (handler *PostgresHandler) CreateNewTask(name string) error {
 	var newTask models.Task
 
 	newTask.Name = name

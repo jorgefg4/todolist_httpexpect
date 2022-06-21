@@ -7,6 +7,8 @@ import (
 
 	//_ "github.com/mattn/go-sqlite3"
 
+	"github.com/jorgefg4/todolist/pkg/database"
+
 	"github.com/jorgefg4/todolist/pkg/service"
 	_ "github.com/lib/pq"
 	"github.com/rs/cors"
@@ -71,7 +73,10 @@ func main() {
 	// s := server.New(repo)
 
 	//Llamo a la capa Service para crear el Server
-	s := service.NewService()
+	svc := &service.Service{
+		DB: &database.PostgresHandler{},
+	}
+	s := svc.NewServer()
 
 	//Cabeceras CORS:
 	handler := cors.New(cors.Options{AllowedMethods: []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"}}).Handler(s.Router())

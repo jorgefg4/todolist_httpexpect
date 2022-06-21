@@ -20,26 +20,31 @@ import (
 // 	GetAllTasks() (map[int]task.Task, error)
 // }
 
-func NewService() server.Server {
+type Service struct {
+	DB database.DatabaseHandler
+}
+
+// TODO Gestionar errores
+func (svc *Service) NewServer() server.Server {
 	//var tasks map[int]*task.Task
 	//tasks = data.Tasks
 
-	_, err := database.GetConnection()
+	_, err := svc.DB.GetConnection()
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	// Pruebas de conexion
-	database.CreateNewTask("Regar mis cactuses")
+	svc.DB.CreateNewTask("Regar mis cactuses")
 	if err != nil {
 		fmt.Println(err)
 	}
-	database.CreateNewTask("Regar mis cactuses de nuevo")
+	svc.DB.CreateNewTask("Regar mis cactuses de nuevo")
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	tasks, err := database.GetAllTasks()
+	tasks, err := svc.DB.GetAllTasks()
 	if err != nil {
 		fmt.Println(err)
 	}
