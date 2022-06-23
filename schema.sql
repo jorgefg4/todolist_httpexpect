@@ -2,7 +2,7 @@
 drop table if exists tasks;
 
 create table tasks (
-   id varchar not null primary key,
+   id serial not null primary key,
    name varchar not null,
    check boolean not null
 );
