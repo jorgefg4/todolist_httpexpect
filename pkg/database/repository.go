@@ -13,13 +13,14 @@ type taskRepository struct {
 	db    DatabaseHandler
 }
 
-func NewTaskRepository(tasks map[int]*task.Task) task.TaskRepository {
+func NewTaskRepository(tasks map[int]*task.Task, DB DatabaseHandler) task.TaskRepository {
 	if tasks == nil {
 		tasks = make(map[int]*task.Task)
 	}
 
 	return &taskRepository{
 		tasks: tasks,
+		db:    DB,
 	}
 }
 

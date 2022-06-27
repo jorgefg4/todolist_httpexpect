@@ -18,7 +18,7 @@ import (
 // TODO agregar como campos los datos de conexion sql (agregar aqui mas campos aparte de la db?)
 // Tener en cuenta la posibilidad de agregar un logger
 type PostgresHandler struct {
-	db  *sql.DB
+	DB  *sql.DB
 	ctx context.Context // Deberia ir aqui...?
 }
 
@@ -31,7 +31,7 @@ const conString string = "postgresql://postgres:gatomagico4444@localhost/postgre
 // TODO Como controlar errores aqui? Da problemas en el main donde se invoca
 func NewPostgres(db *sql.DB, ctx context.Context) *PostgresHandler {
 	return &PostgresHandler{
-		db:  db,
+		DB:  db,
 		ctx: ctx,
 	}
 }
@@ -39,12 +39,12 @@ func NewPostgres(db *sql.DB, ctx context.Context) *PostgresHandler {
 // Stablish a connection with the database
 func (handler *PostgresHandler) GetConnection() error {
 	var err error
-	handler.db, err = sql.Open("postgres", conString)
+	handler.DB, err = sql.Open("postgres", conString)
 	if err != nil {
 		return err
 	}
 
-	err = handler.db.Ping()
+	err = handler.DB.Ping()
 	if err != nil {
 		return err
 	}
@@ -58,7 +58,7 @@ func (handler *PostgresHandler) GetConnection() error {
 // Retrieves all tasks from the database and returns a map with the tasks formatted
 // for the application to use (type of task,Task)
 func (handler *PostgresHandler) GetAllTasks() (map[int]*task.Task, error) {
-	tasks, err := models.Tasks().All(handler.ctx, handler.db)
+	tasks, err := models.Tasks().All(handler.ctx, handler.DB)
 	if err != nil {
 		return nil, err
 	}
@@ -89,27 +89,27 @@ func (handler *PostgresHandler) CreateNewTask(name string) error {
 
 	newTask.Name = name
 
-	err := newTask.Insert(handler.ctx, handler.db, boil.Infer())
+	err := newTask.Insert(handler.ctx, handler.DB, boil.Infer())
 
 	return err
 }
 
 // Delete a given task from the database
 func (handler *PostgresHandler) DeleteTask(id int) error {
-	task, err := models.FindTask(handler.ctx, handler.db, id)
+	task, err := models.FindTask(handler.ctx, handler.DB, id)
 
-	_, err = task.Delete(handler.ctx, handler.db)
+	_, err = task.Delete(handler.ctx, handler.DB)
 
 	return err
 }
 
 // Modifies a given task from the database
 func (handler *PostgresHandler) ModifyTask(id int) error {
-	task, err := models.FindTask(handler.ctx, handler.db, id)
+	task, err := models.FindTask(handler.ctx, handler.DB, id)
 
 	task.Check = true
 
-	_, err = task.Update(handler.ctx, handler.db, boil.Infer())
+	_, err = task.Update(handler.ctx, handler.DB, boil.Infer())
 
 	return err
 }

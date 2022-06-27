@@ -76,10 +76,11 @@ func main() {
 
 	// Declaramos aqui las variables
 	var db *sql.DB
-	var ctx context.Context
+	var ctx context.Context = context.Background()
 
 	//Llamo a la capa Service para crear el Server
-	svc := service.NewService(database.NewPostgres(db, ctx))
+	ph := database.NewPostgres(db, ctx)
+	svc := service.NewService(ph)
 	s, err := svc.NewServer()
 	if err != nil {
 		log.Fatal(err)
