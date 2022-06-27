@@ -23,6 +23,7 @@ func NewTaskRepository(tasks map[int]*task.Task) task.TaskRepository {
 	}
 }
 
+// TODO gestion de errores
 func (r *taskRepository) CreateTask(g *task.Task) error {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()

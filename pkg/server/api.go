@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -72,24 +73,43 @@ func (a *api) Router() http.Handler { //metodo
 // HomeHandler renders the homepage view template
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	push(w, "/web/static/style.css")
+	//err := push(w, "/web/static/style.css")
+	//if err != nil {
+	//	return err
+	//}
+
 	push(w, "/web/static/todolist.css")
+	//err = push(w, "/web/static/todolist.css")
+	//if err != nil {
+	//	return err
+	//}
+
 	push(w, "/web/static/navigation_bar.css")
+	//err = push(w, "/web/static/navigation_bar.css")
+	//if err != nil {
+	//	return err
+	//}
+
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
 	fullData := map[string]interface{}{
 		"NavigationBar": template.HTML(navigationBarHTML),
 	}
 	render(w, r, homepageTpl, "homepage_view", fullData)
+
+	//return err
 }
 
 // Push the given resource to the client.
 func push(w http.ResponseWriter, resource string) {
 	pusher, ok := w.(http.Pusher)
+	var err error
 	if ok {
-		if err := pusher.Push(resource, nil); err == nil {
-			return
-		}
+		err = pusher.Push(resource, nil)
+		log.Fatal(err)
 	}
+
+	//return err
 }
 
 // Render a template, or server error.

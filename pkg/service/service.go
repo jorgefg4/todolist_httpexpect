@@ -24,14 +24,20 @@ type Service struct {
 	DB database.DatabaseHandler
 }
 
+func NewService(DB database.DatabaseHandler) *Service {
+	return &Service{
+		DB: DB,
+	}
+}
+
 // TODO Gestionar errores
-func (svc *Service) NewServer() server.Server {
+func (svc *Service) NewServer() (server.Server, error) {
 	//var tasks map[int]*task.Task
 	//tasks = data.Tasks
 
-	_, err := svc.DB.GetConnection()
+	err := svc.DB.GetConnection()
 	if err != nil {
-		fmt.Println(err)
+		return nil, err
 	}
 
 	/*
@@ -48,7 +54,7 @@ func (svc *Service) NewServer() server.Server {
 
 	tasks, err := svc.DB.GetAllTasks()
 	if err != nil {
-		fmt.Println(err)
+		return nil, err
 	}
 
 	for _, task := range tasks {
@@ -59,5 +65,5 @@ func (svc *Service) NewServer() server.Server {
 	repo := database.NewTaskRepository(tasks)
 	s := server.New(repo)
 
-	return s
+	return s, err
 }

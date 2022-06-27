@@ -5,5 +5,6 @@ import (
 )
 
 type Servicer interface {
+	// Creates a new server
 	NewServer() server.Server
 }

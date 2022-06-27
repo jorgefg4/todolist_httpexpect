@@ -18,12 +18,13 @@ func TestFetchTasks(t *testing.T) {
 		t.Fatalf("could not created request: %v", err)
 	}
 
-	_, err = database.GetConnection()
+	h := database.PostgresHandler{}
+	err = h.GetConnection()
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	tasks, err := database.GetAllTasks()
+	tasks, err := h.GetAllTasks()
 	if err != nil {
 		fmt.Println(err)
 	}

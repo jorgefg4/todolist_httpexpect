@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -72,11 +74,16 @@ func main() {
 	// repo := database.NewGopherRepository(tasks)
 	// s := server.New(repo)
 
+	// Declaramos aqui las variables
+	var db *sql.DB
+	var ctx context.Context
+
 	//Llamo a la capa Service para crear el Server
-	svc := &service.Service{
-		DB: &database.PostgresHandler{},
+	svc := service.NewService(database.NewPostgres(db, ctx))
+	s, err := svc.NewServer()
+	if err != nil {
+		log.Fatal(err)
 	}
-	s := svc.NewServer()
 
 	//Cabeceras CORS:
 	handler := cors.New(cors.Options{AllowedMethods: []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"}}).Handler(s.Router())
