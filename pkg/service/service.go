@@ -20,28 +20,41 @@ import (
 // 	GetAllTasks() (map[int]task.Task, error)
 // }
 
-func NewService() server.Server {
+type Service struct {
+	DB database.DatabaseHandler
+}
+
+func NewService(DB database.DatabaseHandler) *Service {
+	return &Service{
+		DB: DB,
+	}
+}
+
+// TODO Gestionar errores
+func (svc *Service) NewServer() (server.Server, error) {
 	//var tasks map[int]*task.Task
 	//tasks = data.Tasks
 
-	_, err := database.GetConnection()
+	err := svc.DB.GetConnection()
 	if err != nil {
-		fmt.Println(err)
+		return nil, err
 	}
 
-	// // Pruebas de conexion
-	// database.CreateNewTask("Regar mis cactuses")
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// database.CreateNewTask("Regar mis cactuses de nuevo")
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
+	/*
+		// Pruebas de conexion
+		svc.DB.CreateNewTask("Regar mis cactuses")
+		if err != nil {
+			fmt.Println(err)
+		}
+		svc.DB.CreateNewTask("Regar mis cactuses de nuevo")
+		if err != nil {
+			fmt.Println(err)
+		}
+	*/
 
-	tasks, err := database.GetAllTasks()
+	tasks, err := svc.DB.GetAllTasks()
 	if err != nil {
-		fmt.Println(err)
+		return nil, err
 	}
 
 	for _, task := range tasks {
@@ -52,5 +65,5 @@ func NewService() server.Server {
 	repo := database.NewTaskRepository(tasks)
 	s := server.New(repo)
 
-	return s
+	return s, err
 }

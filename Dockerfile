@@ -6,6 +6,9 @@ WORKDIR /src/app
 # We need to create this directory to alude to it
 RUN mkdir /bin/app
 
+# ENV DB_HOST localhost
+# ENV DB_PORT 5432
+
 # Copy files and install dependencies
 COPY . /src/app
 # Apparently, these two are not copied with the prior command (investigate)

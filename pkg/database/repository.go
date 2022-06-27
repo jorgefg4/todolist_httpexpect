@@ -10,6 +10,7 @@ import (
 type taskRepository struct {
 	mtx   sync.RWMutex
 	tasks map[int]*task.Task
+	db    DatabaseHandler
 }
 
 func NewTaskRepository(tasks map[int]*task.Task) task.TaskRepository {
@@ -22,10 +23,11 @@ func NewTaskRepository(tasks map[int]*task.Task) task.TaskRepository {
 	}
 }
 
+// TODO gestion de errores
 func (r *taskRepository) CreateTask(g *task.Task) error {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
-	CreateNewTask(g.Name) //llama a la función de añadir task de postgresHandler
+	r.db.CreateNewTask(g.Name) //llama a la función de añadir task de postgresHandler
 	// if err := r.checkIfExists(g.ID); err != nil {
 	// 	return err
 	// }
@@ -40,7 +42,7 @@ func (r *taskRepository) FetchTasks() ([]*task.Task, error) {
 	defer r.mtx.Unlock()
 
 	//Obtengo tasks de la BD y actualizo el map de tasks del repository
-	tasks, err := GetAllTasks()
+	tasks, err := r.db.GetAllTasks()
 	r.tasks = tasks
 	if err != nil {
 		fmt.Println(err)
@@ -57,7 +59,7 @@ func (r *taskRepository) DeleteTask(ID int) error {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 
-	DeleteTask(ID) //llamada a la funcion de borrar de postgresHandler
+	r.db.DeleteTask(ID) //llamada a la funcion de borrar de postgresHandler
 	//delete(r.tasks, ID)
 
 	return nil
@@ -67,7 +69,7 @@ func (r *taskRepository) UpdateTask(ID int) (int, error) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 
-	err := ModifyTask(ID)
+	err := r.db.ModifyTask(ID)
 	// for _, v := range r.tasks {
 	// 	if v.ID == ID {
 	// 		r.tasks[ID].Check = true
