@@ -1,5 +1,5 @@
 -- schema.sql
-drop table if exists tasks;
+-- drop table if exists tasks;
 
 create table tasks (
    id serial not null primary key,
