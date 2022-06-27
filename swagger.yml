@@ -1,0 +1,120 @@
+openapi: '3.0.2'
+
+info:
+  title: ToDoList
+  description: This API implements a simple ToDoList to display, add, delete, and mark tasks as done.
+  version: '1.0'
+
+servers:
+- url: http://localhost:8000
+
+tags:
+- name: tasks
+  description: This endpoint handles all the information related to the tasks
+
+paths:
+  /:
+
+    get:
+      tags:
+        - tasks
+      description: 'Get all the tasks'
+      responses:
+        '200':
+          description: OK
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/TasksReturn'
+
+    post:
+      tags:
+        - tasks
+      description: 'Add a new task'
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+              $ref: '#/components/schemas/BodyTaskName'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/SavedTask'
+
+  /{id}:
+    delete:
+      tags:
+        - tasks
+      description: 'Delete a task'
+      parameters:
+        - name: id
+          in: path
+          description: Identifier of the task to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '404':
+          $ref: '#/components/responses/BadRequest'
+
+    put:
+      tags:
+        - tasks
+      description: 'Mark a task as done'
+      parameters:
+        - name: id
+          in: path
+          description: Identifier of the task to check
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '404':
+          $ref: '#/components/responses/BadRequest'
+
+
+components:
+  responses:
+    BadRequest:
+      description: (BadRequest) The task doesn't exist
+
+  schemas:
+    BodyTaskName:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name or description of the task
+      additionalProperties: false
+
+    SavedTask:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifier of the saved task
+      additionalProperties: false
+      
+    TasksReturn:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifier of the task
+        name:
+          type: string
+          description: Name or description of the task
+        check:
+          type: boolean
+          description: Indicates if the task has been completed
+      additionalProperties: false
+
+

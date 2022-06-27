@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
 	"github.com/jorgefg4/todolist/pkg/task"
 	"github.com/jorgefg4/todolist/web/assets"
@@ -51,6 +52,18 @@ func New(repo task.TaskRepository) Server {
 	a := &api{repository: repo}
 
 	r := mux.NewRouter() //creamos una instancia de router
+
+	r.Handle("/swagger.yml", http.FileServer(http.Dir("./")))
+
+	// // documentation for developers
+	// opts := middleware.SwaggerUIOpts{Path: "api-doc", SpecURL: "/swagger.yml"}
+	// sh := middleware.SwaggerUI(opts, nil)
+	// r.Handle("/api-doc", sh)
+
+	// documentation for share
+	opts1 := middleware.RedocOpts{Path: "api-doc", SpecURL: "/swagger.yml"}
+	sh1 := middleware.Redoc(opts1, nil)
+	r.Handle("/api-doc", sh1)
 
 	//endpoints:
 	r.HandleFunc("/", HomeHandler)
