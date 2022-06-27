@@ -14,9 +14,8 @@ func TestCreateTask(t *testing.T) {
 
 	// Declaramos aqui las variables
 	var db *sql.DB
-	var ctx context.Context
+	var ctx context.Context = context.Background()
 
-	//Llamo a la capa Service para crear el Server
 	postgreshandler := NewPostgres(db, ctx)
 
 	err := postgreshandler.GetConnection()
@@ -29,7 +28,7 @@ func TestCreateTask(t *testing.T) {
 		fmt.Println(err)
 	}
 
-	repo := NewTaskRepository(tasks)
+	repo := NewTaskRepository(tasks, postgreshandler)
 
 	t1 := task.Task{ID: 1, Name: "tarea de prueba"}
 	repo.CreateTask(&t1)
@@ -38,6 +37,8 @@ func TestCreateTask(t *testing.T) {
 	for _, value := range repo1 {
 		if value.Name == "tarea de prueba" {
 			assert.Equal(t, value.Name, t1.Name, "The two tasks should be the same.")
+			repo.DeleteTask(value.ID) //tras el test se borra la tarea de prueba para evitar su persistencia
 		}
 	}
+
 }
