@@ -1,6 +1,8 @@
 package database
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
 	"testing"
 
@@ -10,12 +12,19 @@ import (
 
 func TestCreateTask(t *testing.T) {
 
-	_, err := GetConnection()
+	// Declaramos aqui las variables
+	var db *sql.DB
+	var ctx context.Context
+
+	//Llamo a la capa Service para crear el Server
+	postgreshandler := NewPostgres(db, ctx)
+
+	err := postgreshandler.GetConnection()
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	tasks, err := GetAllTasks()
+	tasks, err := postgreshandler.GetAllTasks()
 	if err != nil {
 		fmt.Println(err)
 	}

@@ -43,6 +43,7 @@ func (r *taskRepository) FetchTasks() ([]*task.Task, error) {
 
 	//Obtengo tasks de la BD y actualizo el map de tasks del repository
 	tasks, err := r.db.GetAllTasks()
+
 	r.tasks = tasks
 	if err != nil {
 		fmt.Println(err)
