@@ -29,7 +29,7 @@ func TestFetchTasks(t *testing.T) {
 		fmt.Println(err)
 	}
 
-	repo := database.NewTaskRepository(tasks)
+	repo := database.NewTaskRepository(tasks, &h)
 	s := New(repo)
 
 	// repo := database.NewTaskRepository(data.Tasks)

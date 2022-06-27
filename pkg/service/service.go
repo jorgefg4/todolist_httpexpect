@@ -62,7 +62,7 @@ func (svc *Service) NewServer() (server.Server, error) {
 	}
 
 	//Llamo al package "server" para crear un nuevo router
-	repo := database.NewTaskRepository(tasks)
+	repo := database.NewTaskRepository(tasks, svc.DB)
 	s := server.New(repo)
 
 	return s, err
