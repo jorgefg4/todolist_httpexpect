@@ -27,7 +27,6 @@ FROM gcr.io/distroless/base-debian11
 # Copy files from "build" to distroless image (only the compiled binaries so the image does not weight a lot)
 COPY --from=build /bin/app /
 COPY ./web/static ./web/static
-COPY ./web/assets ./web/assets
  
 # Port to listen to
 EXPOSE 8000

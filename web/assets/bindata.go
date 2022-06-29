@@ -181,7 +181,7 @@ var _webTemplatesIndexHtml = []byte(`<!DOCTYPE html>
                     li.appendChild(t);
                     li.id = json[i].ID; //le asigna a cada etiqueta HTML <li> el ID de la task
 					
-					if(json[i].check == true){
+					if(json[i].check_valid == true){
 						li.className="checked";
 					}
 					li.setAttribute("onclick","checkTask(this)");
