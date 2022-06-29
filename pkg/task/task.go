@@ -5,7 +5,7 @@ type Task struct {
 	ID   int    `json:"ID"`
 	Name string `json:"name,omitempty"`
 	//Description string `json:"description,omitempty"`
-	Check bool `json:"check,omitempty"`
+	Check_valid bool `json:"check_valid,omitempty"`
 }
 
 // Repository provides access to the task storage

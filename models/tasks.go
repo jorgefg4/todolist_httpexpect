@@ -23,32 +23,32 @@ import (
 
 // Task is an object representing the database table.
 type Task struct {
-	ID    int    `boil:"id" json:"id" toml:"id" yaml:"id"`
-	Name  string `boil:"name" json:"name" toml:"name" yaml:"name"`
-	Check bool   `boil:"check" json:"check" toml:"check" yaml:"check"`
+	ID         int    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	Name       string `boil:"name" json:"name" toml:"name" yaml:"name"`
+	CheckValid bool   `boil:"check_valid" json:"check_valid" toml:"check_valid" yaml:"check_valid"`
 
 	R *taskR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L taskL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var TaskColumns = struct {
-	ID    string
-	Name  string
-	Check string
+	ID         string
+	Name       string
+	CheckValid string
 }{
-	ID:    "id",
-	Name:  "name",
-	Check: "check",
+	ID:         "id",
+	Name:       "name",
+	CheckValid: "check_valid",
 }
 
 var TaskTableColumns = struct {
-	ID    string
-	Name  string
-	Check string
+	ID         string
+	Name       string
+	CheckValid string
 }{
-	ID:    "tasks.id",
-	Name:  "tasks.name",
-	Check: "tasks.check",
+	ID:         "tasks.id",
+	Name:       "tasks.name",
+	CheckValid: "tasks.check_valid",
 }
 
 // Generated where
@@ -109,13 +109,13 @@ func (w whereHelperbool) GT(x bool) qm.QueryMod  { return qmhelper.Where(w.field
 func (w whereHelperbool) GTE(x bool) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
 
 var TaskWhere = struct {
-	ID    whereHelperint
-	Name  whereHelperstring
-	Check whereHelperbool
+	ID         whereHelperint
+	Name       whereHelperstring
+	CheckValid whereHelperbool
 }{
-	ID:    whereHelperint{field: "\"tasks\".\"id\""},
-	Name:  whereHelperstring{field: "\"tasks\".\"name\""},
-	Check: whereHelperbool{field: "\"tasks\".\"check\""},
+	ID:         whereHelperint{field: "\"tasks\".\"id\""},
+	Name:       whereHelperstring{field: "\"tasks\".\"name\""},
+	CheckValid: whereHelperbool{field: "\"tasks\".\"check_valid\""},
 }
 
 // TaskRels is where relationship names are stored.
@@ -135,9 +135,9 @@ func (*taskR) NewStruct() *taskR {
 type taskL struct{}
 
 var (
-	taskAllColumns            = []string{"id", "name", "check"}
-	taskColumnsWithoutDefault = []string{"name"}
-	taskColumnsWithDefault    = []string{"id", "check"}
+	taskAllColumns            = []string{"id", "name", "check_valid"}
+	taskColumnsWithoutDefault = []string{"name", "check_valid"}
+	taskColumnsWithDefault    = []string{"id"}
 	taskPrimaryKeyColumns     = []string{"id"}
 	taskGeneratedColumns      = []string{}
 )
