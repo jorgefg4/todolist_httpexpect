@@ -1,16 +1,37 @@
+# name: Tests 
+
+# on:
+#   push:
+#     branches: [ develop ]
+
+#   workflow_dispatch:
+
+# jobs:
+#   build-test:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - uses: actions/checkout@v3
+#     - name: Ejecución de tests del proyecto
+#       run: go test ./...
+
 name: Tests 
 
 on:
   push:
-    branches: [ develop ]
-
-  workflow_dispatch:
+    branches: [ jorge/docker ]
 
 jobs:
-  build-test:
+  build-and-push-images:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Ejecución de tests del proyecto
-      run: go test ./...
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: .  //Contexto para el comando Docker
+      #     push: false //Indicamos si queremos hacer push de la imagen
+      - name: Creación docker-compose
+        run: docker-compose build

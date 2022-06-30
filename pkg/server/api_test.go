@@ -22,6 +22,7 @@ func TestFetchTasks(t *testing.T) {
 	err = h.GetConnection()
 	if err != nil {
 		fmt.Println(err)
+		t.Fatalf("error")
 	}
 
 	tasks, err := h.GetAllTasks()

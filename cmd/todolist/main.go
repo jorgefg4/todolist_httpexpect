@@ -88,6 +88,7 @@ func main() {
 
 	//Cabeceras CORS:
 	handler := cors.New(cors.Options{AllowedMethods: []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"}}).Handler(s.Router())
+
 	log.Fatal(http.ListenAndServe(":8000", handler)) //Se pone a escuchar en el puerto TCP 8000 de localhost y llama al handler
 
 	//http.ListenAndServe(":8000", s.Router()) //Se pone a escuchar en el puerto TCP 8000 de localhost y llama al handler
