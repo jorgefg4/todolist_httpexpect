@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"database/sql"
+	"os"
 
 	task "github.com/jorgefg4/todolist/pkg/task"
 	"github.com/volatiletech/sqlboiler/v4/boil"
@@ -23,7 +24,8 @@ type PostgresHandler struct {
 }
 
 // TODO Plantear dejar en otro sitio mas adecuado (main?)
-const conString string = "postgresql://postgres:gatomagico4444@db/postgres?sslmode=disable"
+// const conString string = "postgresql://postgres:gatomagico4444@db/postgres?sslmode=disable"
+var conString string = "postgresql://postgres:gatomagico4444@" + os.Getenv("HOST_DB") + ":" + os.Getenv("PORT_DB") + "/postgres?sslmode=disable"
 
 //var db *sql.DB
 //var ctx context.Context

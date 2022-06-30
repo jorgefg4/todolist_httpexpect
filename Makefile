@@ -1,10 +1,13 @@
 all: build run
 
 build:
-	docker build -t todolist .
+	docker-compose build
 
 run:
-	docker run --rm -p 8000:8000 --name todolist todolist
+	docker-compose up
 
 stop:
-	docker stop todolist
+	docker-compose down
+
+test:
+	go test ./pkg/...

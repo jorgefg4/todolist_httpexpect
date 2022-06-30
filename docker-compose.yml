@@ -5,6 +5,9 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    environment:
+    - HOST_DB=db
+    - PORT_DB=5432
 
   db:
     image: postgres:13-alpine
