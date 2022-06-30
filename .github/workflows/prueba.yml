@@ -31,6 +31,9 @@ jobs:
 
       - name: Creación docker-compose
         run: docker-compose build
-        
+
+      - name: Lanzamiento docker-compose
+        run: docker-compose up
+
       - name: Ejecución de tests del proyecto
         run: go test ./...
