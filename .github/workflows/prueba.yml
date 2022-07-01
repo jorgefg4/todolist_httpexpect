@@ -33,7 +33,7 @@ jobs:
         run: docker-compose build
 
       - name: Lanzamiento docker-compose
-        run: docker-compose up
+        run: docker-compose up && go test ./...
 
       - name: Ejecución de tests del proyecto
         run: go test ./...
