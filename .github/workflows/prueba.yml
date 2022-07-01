@@ -35,16 +35,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '^1.18.3'
+
       - name: Creación docker-compose
         run: docker-compose build
 
       - name: Lanzamiento docker-compose
         run: docker-compose up -d
 
-      # - uses: actions/setup-go@v3
-      #   with:
-      #     go-version: '^1.18.3'
+      - name: Ejecución de tests del proyecto
+        run: go test ./...
+     
+
+      # - name: ejecución de tests 
+      #   uses: actions/setup-go@v3
+      #     with:
+      #       go-version: '^1.18.3'
       #   run: go test ./...
 
-      # - name: Ejecución de tests del proyecto
-      #   run: go test ./...
+     
