@@ -5,7 +5,11 @@ services:
       - "8000:8000"
     depends_on:
       - db
+
+    command: sh -c "/wait && /todolist"
+
     environment:
+    - WAIT_HOSTS=db:5432
     - HOST_DB=db
     - PORT_DB=5432
     - USER_DB=postgres
