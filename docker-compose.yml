@@ -8,6 +8,9 @@ services:
     environment:
     - HOST_DB=db
     - PORT_DB=5432
+    - USER_DB=postgres
+    - PASSWORD_DB=gatomagico4444
+    - NAME_DB=postgres
 
   db:
     image: postgres:13-alpine
