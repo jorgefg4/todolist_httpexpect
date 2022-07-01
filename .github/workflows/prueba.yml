@@ -24,6 +24,12 @@ on:
 jobs:
   build-and-push-images:
     runs-on: ubuntu-latest
+    env: 
+      HOST_DB: db
+      PORT_DB: 5432
+      USER_DB: postgres
+      PASSWORD_DB: gatomagico4444
+      NAME_DB: postgres
 
     steps:
       - name: Checkout repository
