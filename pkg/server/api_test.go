@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/jorgefg4/todolist/pkg/database"
@@ -19,6 +20,8 @@ func TestFetchTasks(t *testing.T) {
 	}
 
 	h := database.PostgresHandler{}
+
+	os.Setenv("HOST_DB", "localhost")
 	err = h.GetConnection()
 	if err != nil {
 		fmt.Println(err)
