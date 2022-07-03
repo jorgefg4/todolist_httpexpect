@@ -35,7 +35,7 @@ jobs:
       - name: Tests test
         uses: addnab/docker-run-action@v3
         with:
-          image: todolist_app
+          image: app
           run: go test ./...
 
       #- name: Ejecución de tests del proyecto
