@@ -8,11 +8,11 @@ services:
     depends_on:
       - db
 
-    command: sh -c "/wait && /todolist"
+    command: sh -c "/wait && /bin/app/todolist"
 
     environment:
     - WAIT_HOSTS=db:5432
-    - HOST_DB=localhost # Revisar
+    - HOST_DB=db # Revisar
     - PORT_DB=5432
     - USER_DB=postgres
     - PASSWORD_DB=gatomagico4444
