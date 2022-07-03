@@ -1,0 +1,29 @@
+# Base image, tagged "build"
+FROM golang:1.18.3 as build
+
+# Specify the source code directory (creates it)
+WORKDIR /src/app
+# We need to create this directory to alude to it
+RUN mkdir /bin/app
+
+# Copy files and install dependencies
+COPY . /src/app
+# Apparently, these two are not copied with the prior command (investigate)
+COPY go.mod  go.sum ./
+# Downloads (and installs(?)) dependencies specified in go.mod (investigate)
+RUN go mod download
+
+# Build into bin directory
+# -o tag indicates where to build into, next argument where to take packages
+RUN go build -o /bin/app ./cmd/todolist
+
+# Waiting engine to mskre sure the database is running before connecting
+ENV WAIT_VERSION 2.7.2
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
+RUN chmod +x /wait
+
+# Port to listen to
+EXPOSE 8000
+
+# Dockerfile used for tests, as this environment allows for some features we need
+# while testing, but that won't go into production
