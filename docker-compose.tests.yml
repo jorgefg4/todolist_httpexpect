@@ -1,6 +1,8 @@
 services:
   app:
-    build: ./Dockerfile-tests
+    build: 
+      context: .
+      dockerfile: Dockerfile-tests
     ports:
       - "8000:8000"
     depends_on:
