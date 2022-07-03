@@ -26,11 +26,11 @@ jobs:
       - name: Lanzamiento docker-compose
         run: docker-compose -f docker-compose.tests.yml up -d
 
-      - name: Checkout docker (?)
-        uses: docker/build-push-action@v2
-        with:
-          tags: todolist_app
-          push: false
+      #- name: Checkout docker (?)
+      #  uses: docker/build-push-action@v2
+      #  with:
+      #    tags: todolist_app
+      #    push: false
 
       - name: Tests test
         uses: addnab/docker-run-action@v3
