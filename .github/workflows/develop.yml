@@ -2,7 +2,7 @@ name: Tests
 
 on:
   push:
-    branches: [ jorge/docker ]
+    branches: [ develop ]
 
 jobs:
   build-and-push-images:
@@ -17,11 +17,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      # - name: Setup go
-      #   uses: actions/setup-go@v3
-      #   with:
-      #     go-version: '^1.18.3'
 
       - name: Creación docker-compose
         run: docker-compose build
