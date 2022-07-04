@@ -1,11 +1,15 @@
 # todolist
 ***
 This code repo contains the code developed for a Go rest API consisting of a simple ToDoList service.
+
 ![home page](screenshots/todo.png)
 ## Table of Contents
 1. [General Info](#general-info)
 2. [Technologies](#technologies)
-3. [Installation](#installation)
+3. [Requirements](#requirements)
+4. [Installation](#installation)
+5. [Authentication](#authentication)
+6. [API docs](#api-docs)
 ### General Info
 ***
 At this time, you have a RESTful API server running at `http://127.0.0.1:8000`. It provides the following endpoints:
@@ -21,20 +25,45 @@ A list of technologies used within the project:
 * [Docker](https://www.docker.com)
 * [rs/cors](https://github.com/rs/cors)
 * [gorilla/mux](https://"github.com/gorilla/mux)
+* [stretchr/testify](https://github.com/stretchr/testify)
+* [volatiletech/sqlboiler](https://github.com/volatiletech/sqlboiler)
+* [PostgreSQL](https://www.postgresql.org)
+* [Swagger](https://swagger.io)
+## Requirements
+***
+For the project to launch, you will need Docker installed, and preferably the Make tool too.
 ## Installation
 ***
-A little intro about the installation. 
+To install this project you need to clone or download it. 
 ```
 $ git clone https://github.com/jorgefg4/todolist.git
-$ cd ../cmd/todolist
-$ go run main.go
+
 ```
+Then you have two options.
+- Not having Make:
 
-*This section is pending an update, and is meant as a guide for future proper redaction*
-For the project to launch, you will need Docker installed, and preferably the Make tool too.
+    Enter the root folder and then execute:
+    ```
+    $ docker-compose build
+    $ docker-compose up
+    ```
+    To stop the app, execute `docker stop todolist`.
 
-Having Make:
- Clone the repository, enter the root folder, then execute "make". To stop the app, execute "make stop".
+- Having Make:
 
-Not having Make:
- Clone the repository, enter the root folder, then execute "docker build -t todolist ." and "docker run -p 8000:8000 --name todolist todolist". To stop the app, execute "docker stop todolist".
+    Enter the root folder, then execute - `make`. To stop the app, execute - `make stop`.
+## Authentication
+***
+ There are no authentication implemented yet. So, all the end-points are open.
+## Core Resources
+***
+`Task` object represents snapshot of a specific task with a unique Id.
+## API docs
+***
+This specification follows the Open API 3.0.3 specification. It is written in YAML and deployed automatically using ReDoc. See the ReDoc documentation for details.
+
+
+
+
+
+ 
