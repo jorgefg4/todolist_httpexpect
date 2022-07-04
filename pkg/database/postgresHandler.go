@@ -41,7 +41,7 @@ func NewPostgres(db *sql.DB, ctx context.Context) *PostgresHandler {
 // Stablish a connection with the database
 func (handler *PostgresHandler) GetConnection() error {
 	var err error
-	var conString string = "postgresql://" + os.Getenv("USER_DB") + ":" + os.Getenv("PASSWORD_DB") + "@" + os.Getenv("HOST_DB") + ":" + os.Getenv("PORT_DB") + "/" + os.Getenv("NAME_DB") + "?sslmode=disable"
+	//var conString string = "postgresql://" + os.Getenv("USER_DB") + ":" + os.Getenv("PASSWORD_DB") + "@" + os.Getenv("HOST_DB") + ":" + os.Getenv("PORT_DB") + "/" + os.Getenv("NAME_DB") + "?sslmode=disable"
 	handler.DB, err = sql.Open("postgres", conString)
 	if err != nil {
 		return err

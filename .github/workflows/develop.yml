@@ -1,20 +1,3 @@
-# name: Tests 
-
-# on:
-#   push:
-#     branches: [ develop ]
-
-#   workflow_dispatch:
-
-# jobs:
-#   build-test:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#     - uses: actions/checkout@v3
-#     - name: Ejecución de tests del proyecto
-#       run: go test ./...
-
 name: Tests 
 
 on:
@@ -25,7 +8,7 @@ jobs:
   build-and-push-images:
     runs-on: ubuntu-latest
     env: 
-      HOST_DB: db
+      HOST_DB: localhost
       PORT_DB: 5432
       USER_DB: postgres
       PASSWORD_DB: gatomagico4444
@@ -48,12 +31,5 @@ jobs:
 
       - name: Ejecución de tests del proyecto
         run: go test ./...
-     
-
-      # - name: ejecución de tests 
-      #   uses: actions/setup-go@v3
-      #     with:
-      #       go-version: '^1.18.3'
-      #   run: go test ./...
 
      
