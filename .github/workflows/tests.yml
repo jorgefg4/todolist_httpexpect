@@ -36,6 +36,7 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: todolist_app
+          env: HOST_DB:db
           run: go test ./...
 
       #- name: Ejecución de tests del proyecto
