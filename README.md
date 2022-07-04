@@ -9,6 +9,7 @@ This code repo contains the code developed for a Go rest API consisting of a sim
 3. [Requirements](#requirements)
 4. [Installation](#installation)
 5. [Authentication](#authentication)
+5. [Testing](#testing)
 6. [API docs](#api-docs)
 ### General Info
 ***
@@ -29,6 +30,7 @@ A list of technologies used within the project:
 * [volatiletech/sqlboiler](https://github.com/volatiletech/sqlboiler)
 * [PostgreSQL](https://www.postgresql.org)
 * [Swagger](https://swagger.io)
+* [go-openapi/runtime](https://github.com/go-openapi/runtime)
 ## Requirements
 ***
 For the project to launch, you will need Docker installed, and preferably the Make tool too.
@@ -60,9 +62,11 @@ Then you have two options.
 `Task` object represents snapshot of a specific task with a unique Id.
 ## API docs
 ***
-This specification follows the Open API 3.0.3 specification. It is written in YAML and deployed automatically using ReDoc. See the ReDoc documentation for details.
-
-
+This specification follows the Swagger specification. It is written in YAML and deployed automatically using ReDoc.
+You can access the API documentation in the path `localhost:8000/api-doc`
+## Testing
+***
+For the execution of the API tests, it will be possible to execute `make test` to execute all the tests.
 
 
 
