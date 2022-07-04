@@ -1,6 +1,7 @@
 # todolist
 ***
 This code repo contains the code developed for a Go rest API consisting of a simple ToDoList service.
+![home page](screenshots/todo.png)
 ## Table of Contents
 1. [General Info](#general-info)
 2. [Technologies](#technologies)
