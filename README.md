@@ -19,7 +19,9 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8000`. 
 * `POST /tasks`: add a new task
 * `PUT /tasks/:id`: mark a task as completed
 * `DELETE /tasks/:id`: deletes a task
-## Technologies
+
+The API achieves data persistence using a PostgreSQL implemented database with the SQL-boiler ORM. This database is initialized with a single "tasks" table. This table contains the columns of 'id', 'name' and 'check_valid'.
+### Technologies
 ***
 A list of technologies used within the project:
 * [Go](https://go.dev): Version 1.18.3
@@ -31,10 +33,10 @@ A list of technologies used within the project:
 * [PostgreSQL](https://www.postgresql.org)
 * [Swagger](https://swagger.io)
 * [go-openapi/runtime](https://github.com/go-openapi/runtime)
-## Requirements
+### Requirements
 ***
 For the project to launch, you will need Docker installed, and preferably the Make tool too.
-## Installation
+### Installation
 ***
 To install this project you need to clone or download it. 
 ```
@@ -49,22 +51,22 @@ Then you have two options.
     $ docker-compose build
     $ docker-compose up
     ```
-    To stop the app, execute `docker stop todolist`.
+    To stop the app, execute `docker-compose down`.
 
 - Having Make:
 
     Enter the root folder, then execute - `make`. To stop the app, execute - `make stop`.
-## Authentication
+### Authentication
 ***
  There are no authentication implemented yet. So, all the end-points are open.
-## Core Resources
+### Core Resources
 ***
 `Task` object represents snapshot of a specific task with a unique Id.
-## API docs
+### API docs
 ***
 This specification follows the Swagger specification. It is written in YAML and deployed automatically using ReDoc.
 You can access the API documentation in the path `localhost:8000/api-doc`
-## Testing
+### Testing
 ***
 For the execution of the API tests, it will be possible to execute `make test` to execute all the tests.
 
