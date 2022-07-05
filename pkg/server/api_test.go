@@ -19,6 +19,7 @@ func TestFetchTasks(t *testing.T) {
 	}
 
 	h := database.PostgresHandler{}
+
 	err = h.GetConnection()
 	if err != nil {
 		fmt.Println(err)
@@ -28,6 +29,7 @@ func TestFetchTasks(t *testing.T) {
 	tasks, err := h.GetAllTasks()
 	if err != nil {
 		fmt.Println(err)
+		t.Fatalf("error")
 	}
 
 	repo := database.NewTaskRepository(tasks, &h)
