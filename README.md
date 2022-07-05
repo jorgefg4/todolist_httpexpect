@@ -55,7 +55,7 @@ Then you have two options.
 
 - Having Make:
 
-    Enter the root folder, then execute - `make`. To stop the app, execute - `make stop`.
+    Enter the root folder, then execute `make`. To stop the app, execute `make stop`.
 ### Authentication
 ***
  There are no authentication implemented yet. So, all the end-points are open.
