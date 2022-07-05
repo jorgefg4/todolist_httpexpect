@@ -1,0 +1,30 @@
+name: Tests 
+
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  build-and-push-images:
+    runs-on: ubuntu-latest
+    env: 
+      HOST_DB: localhost
+      PORT_DB: 5432
+      USER_DB: postgres
+      PASSWORD_DB: gatomagico4444
+      NAME_DB: postgres
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Creación docker-compose
+        run: docker-compose build
+
+      - name: Lanzamiento docker-compose
+        run: docker-compose up -d
+
+      - name: Ejecución de tests del proyecto
+        run: go test ./...
+
+     

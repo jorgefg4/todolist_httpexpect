@@ -11,7 +11,7 @@ import (
 // 	ID   string `boil:"ID" json:"ID"`
 // 	Name string `boil:"name" json:"name,omitempty"`
 // 	//Description string `json:"description,omitempty"`
-// 	Check string `boil:"check" json:"check,omitempty"`
+// 	Check_valid string `boil:"check_valid" json:"check_valid,omitempty"`
 // }
 
 // type Service interface {

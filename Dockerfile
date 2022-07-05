@@ -9,6 +9,7 @@ RUN mkdir /bin/app
 # ENV DB_HOST localhost
 # ENV DB_PORT 5432
 
+
 # Copy files and install dependencies
 COPY . /src/app
 # Apparently, these two are not copied with the prior command (investigate)
@@ -21,14 +22,28 @@ RUN go mod download
 RUN go build -o /bin/app ./cmd/todolist
 
 
+# # Image to work (distroless, low weight)
+# FROM gcr.io/distroless/base-debian11
+
 # Image to work (distroless, low weight)
-FROM gcr.io/distroless/base-debian11
+# FROM gcr.io/distroless/base-debian11
+
+# Image for tests
+FROM ubuntu
+
+
 
 # Copy files from "build" to distroless image (only the compiled binaries so the image does not weight a lot)
 COPY --from=build /bin/app /
+COPY ./web/static ./web/static
+COPY ./swagger.yml ./swagger.yml
  
+ENV WAIT_VERSION 2.7.2
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
+RUN chmod +x /wait
+
 # Port to listen to
 EXPOSE 8000
 
 # Start the app
-CMD ["/todolist"]
+# CMD ["/todolist"]

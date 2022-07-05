@@ -21,11 +21,13 @@ func TestCreateTask(t *testing.T) {
 	err := postgreshandler.GetConnection()
 	if err != nil {
 		fmt.Println(err)
+		t.Fatalf("error")
 	}
 
 	tasks, err := postgreshandler.GetAllTasks()
 	if err != nil {
 		fmt.Println(err)
+		t.Fatalf("error")
 	}
 
 	repo := NewTaskRepository(tasks, postgreshandler)

@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"database/sql"
+	"os"
 
 	task "github.com/jorgefg4/todolist/pkg/task"
 	"github.com/volatiletech/sqlboiler/v4/boil"
@@ -23,7 +24,8 @@ type PostgresHandler struct {
 }
 
 // TODO Plantear dejar en otro sitio mas adecuado (main?)
-const conString string = "postgresql://postgres:gatomagico4444@localhost/postgres?sslmode=disable"
+// const conString string = "postgresql://postgres:gatomagico4444@db/postgres?sslmode=disable"
+var conString string = "postgresql://" + os.Getenv("USER_DB") + ":" + os.Getenv("PASSWORD_DB") + "@" + os.Getenv("HOST_DB") + ":" + os.Getenv("PORT_DB") + "/" + os.Getenv("NAME_DB") + "?sslmode=disable"
 
 //var db *sql.DB
 //var ctx context.Context
@@ -39,6 +41,7 @@ func NewPostgres(db *sql.DB, ctx context.Context) *PostgresHandler {
 // Stablish a connection with the database
 func (handler *PostgresHandler) GetConnection() error {
 	var err error
+	//var conString string = "postgresql://" + os.Getenv("USER_DB") + ":" + os.Getenv("PASSWORD_DB") + "@" + os.Getenv("HOST_DB") + ":" + os.Getenv("PORT_DB") + "/" + os.Getenv("NAME_DB") + "?sslmode=disable"
 	handler.DB, err = sql.Open("postgres", conString)
 	if err != nil {
 		return err
@@ -68,12 +71,12 @@ func (handler *PostgresHandler) GetAllTasks() (map[int]*task.Task, error) {
 	for _, databaseTask := range tasks {
 		id := databaseTask.ID
 		name := databaseTask.Name
-		check := databaseTask.Check
+		check_valid := databaseTask.CheckValid
 
 		newTask := task.Task{
-			ID:    id,
-			Name:  name,
-			Check: check,
+			ID:          id,
+			Name:        name,
+			Check_valid: check_valid,
 		}
 
 		tasksMap[id] = &newTask
@@ -107,7 +110,7 @@ func (handler *PostgresHandler) DeleteTask(id int) error {
 func (handler *PostgresHandler) ModifyTask(id int) error {
 	task, err := models.FindTask(handler.ctx, handler.DB, id)
 
-	task.Check = true
+	task.CheckValid = true
 
 	_, err = task.Update(handler.ctx, handler.DB, boil.Infer())
 

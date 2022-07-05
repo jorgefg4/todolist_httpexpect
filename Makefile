@@ -1,10 +1,18 @@
 all: build run
 
 build:
-	docker build -t todolist .
+	docker-compose build
 
 run:
-	docker run --rm -p 8000:8000 --name todolist todolist
+	docker-compose up
 
 stop:
-	docker stop todolist
+	docker-compose down
+
+test:
+	HOST_DB=localhost \
+    PORT_DB=5432 \
+    USER_DB=postgres \
+    PASSWORD_DB=gatomagico4444 \
+    NAME_DB=postgres \
+	go test ./pkg/...

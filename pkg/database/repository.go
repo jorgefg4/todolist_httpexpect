@@ -32,7 +32,7 @@ func (r *taskRepository) CreateTask(g *task.Task) error {
 	// if err := r.checkIfExists(g.ID); err != nil {
 	// 	return err
 	// }
-	// g.Check = false
+	// g.Check_valid = false
 	// r.tasks[g.ID] = g
 
 	return nil
@@ -74,7 +74,7 @@ func (r *taskRepository) UpdateTask(ID int) (int, error) {
 	err := r.db.ModifyTask(ID)
 	// for _, v := range r.tasks {
 	// 	if v.ID == ID {
-	// 		r.tasks[ID].Check = true
+	// 		r.tasks[ID].Check_valid = true
 	// 		return 0, nil
 	// 	}
 	// }
