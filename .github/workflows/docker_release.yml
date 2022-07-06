@@ -16,7 +16,7 @@ jobs:
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
           username: error404usernamenotfound
-          password: ${{ secrets.PASSWORD_DOCKERHUB }}
+          password: MockPasswordForDocker4
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
