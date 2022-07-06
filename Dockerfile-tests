@@ -3,14 +3,15 @@ FROM golang:1.18.3 as build
 
 # Specify the source code directory (creates it)
 WORKDIR /src/app
+
 # We need to create this directory to alude to it
 RUN mkdir /bin/app
 
 # Copy files and install dependencies
 COPY . /src/app
-# Apparently, these two are not copied with the prior command (investigate)
 COPY go.mod  go.sum ./
-# Downloads (and installs(?)) dependencies specified in go.mod (investigate)
+
+# Downloads and installs dependencies specified in go.mod 
 RUN go mod download
 
 # Build into bin directory

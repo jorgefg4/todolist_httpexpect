@@ -12,7 +12,7 @@ services:
 
     environment:
     - WAIT_HOSTS=db:5432
-    - HOST_DB=172.17.0.1 # Revisar
+    - HOST_DB=172.17.0.1 
     - PORT_DB=5432
     - USER_DB=postgres
     - PASSWORD_DB=gatomagico4444

@@ -1,24 +1,28 @@
 package task
 
-//Se incluyen tags para tranformar el struct desde json o hacia json
+// Type that defines a task
+// Se incluyen tags para tranformar el struct desde json o hacia json
 type Task struct {
-	ID   int    `json:"ID"`
-	Name string `json:"name,omitempty"`
-	//Description string `json:"description,omitempty"`
-	Check_valid bool `json:"check_valid,omitempty"`
+	ID          int    `json:"ID"`
+	Name        string `json:"name,omitempty"`
+	Check_valid bool   `json:"check_valid,omitempty"`
 }
 
+// Defines the interface to interact with the tasks
 // Repository provides access to the task storage
 type TaskRepository interface {
-	// CreateGopher saves a given gopher
+	// Creates a new task
 	CreateTask(g *Task) error
-	// FetchGophers return all gophers saved in storage
+
+	// Fetch the tasks in the database
 	FetchTasks() ([]*Task, error)
-	// DeleteGopher remove gopher with given ID
+
+	// Deletes a given task
 	DeleteTask(ID int) error
-	// UpdateGopher modify gopher with given ID and given new data
-	// UpdateGopher(ID int, g *Task) error
+
+	// Updates a given task
 	UpdateTask(ID int) (int, error)
-	// FetchGopherByID returns the gopher with given ID
+
+	// Retrieves a given task
 	FetchTaskByID(ID int) (*Task, error)
 }

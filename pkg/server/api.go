@@ -32,10 +32,6 @@ func init() {
 
 	secondViewHTML := assets.MustAssetString("web/templates/second_view.html")
 	secondViewTpl = template.Must(template.New("second_view").Parse(secondViewHTML))
-
-	// thirdViewFuncMap := ThirdViewFormattingFuncMap()
-	// thirdViewHTML := assets.MustAssetString("templates/third_view.html")
-	// thirdViewTpl = template.Must(template.New("third_view").Funcs(thirdViewFuncMap).Parse(thirdViewHTML))
 }
 
 type api struct {
@@ -54,11 +50,6 @@ func New(repo task.TaskRepository) Server {
 	r := mux.NewRouter() //creamos una instancia de router
 
 	r.Handle("/swagger.yml", http.FileServer(http.Dir("./")))
-
-	// // documentation for developers
-	// opts := middleware.SwaggerUIOpts{Path: "api-doc", SpecURL: "/swagger.yml"}
-	// sh := middleware.SwaggerUI(opts, nil)
-	// r.Handle("/api-doc", sh)
 
 	// documentation for share
 	opts1 := middleware.RedocOpts{Path: "api-doc", SpecURL: "/swagger.yml"}
@@ -86,22 +77,10 @@ func (a *api) Router() http.Handler { //metodo
 // HomeHandler renders the homepage view template
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	push(w, "/web/static/style.css")
-	//err := push(w, "/web/static/style.css")
-	//if err != nil {
-	//	return err
-	//}
 
 	push(w, "/web/static/todolist.css")
-	//err = push(w, "/web/static/todolist.css")
-	//if err != nil {
-	//	return err
-	//}
 
 	push(w, "/web/static/navigation_bar.css")
-	//err = push(w, "/web/static/navigation_bar.css")
-	//if err != nil {
-	//	return err
-	//}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
@@ -109,8 +88,6 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		"NavigationBar": template.HTML(navigationBarHTML),
 	}
 	render(w, r, homepageTpl, "homepage_view", fullData)
-
-	//return err
 }
 
 // Push the given resource to the client.
@@ -121,8 +98,6 @@ func push(w http.ResponseWriter, resource string) {
 		err = pusher.Push(resource, nil)
 		log.Fatal(err)
 	}
-
-	//return err
 }
 
 // Render a template, or server error.
