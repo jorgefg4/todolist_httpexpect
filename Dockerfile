@@ -20,11 +20,19 @@ RUN go build -o /bin/app ./cmd/todolist
 
 
 # Image to work (distroless, low weight)
+<<<<<<< HEAD
 # FROM gcr.io/distroless/base-debian11
 
 # Image to work, accepts command line 
 FROM ubuntu
 
+=======
+FROM gcr.io/distroless/base-debian11
+
+# Image for tests; comment the previous line and uncomment this one
+# FROM ubuntu
+
+>>>>>>> 22143b9fcb3cea715c4724ec5ce018e5b85b6682
 # Copy files from "build" to distroless image (only the binaries so the image does not weight a lot)
 COPY --from=build /bin/app /
 COPY ./web/static ./web/static
