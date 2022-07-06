@@ -6,5 +6,3 @@ create table tasks (
    name varchar not null,
    check_valid boolean not null
 );
-
-

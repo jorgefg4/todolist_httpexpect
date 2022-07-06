@@ -10,9 +10,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// Tests the creation of a new task
 func TestCreateTask(t *testing.T) {
-
-	// Declaramos aqui las variables
 	var db *sql.DB
 	var ctx context.Context = context.Background()
 

@@ -12,6 +12,7 @@ import (
 	"github.com/jorgefg4/todolist/pkg/task"
 )
 
+// Tests the retrieval of the tasks from the database
 func TestFetchTasks(t *testing.T) {
 	req, err := http.NewRequest("GET", "/tasks", nil)
 	if err != nil {
@@ -35,10 +36,7 @@ func TestFetchTasks(t *testing.T) {
 	repo := database.NewTaskRepository(tasks, &h)
 	s := New(repo)
 
-	// repo := database.NewTaskRepository(data.Tasks)
-	// s := New(repo)
-
-	rec := httptest.NewRecorder() //con el paquete httptest podemos generar el http.ResponseWriter
+	rec := httptest.NewRecorder() // Con el paquete httptest podemos generar el http.ResponseWriter
 
 	s.fetchTasks(rec, req)
 
@@ -58,11 +56,9 @@ func TestFetchTasks(t *testing.T) {
 		t.Fatalf("could not unmarshall response %v", err)
 	}
 
-	// expected := len(data.Tasks)
 	expected := len(tasks)
 
 	if len(got) != expected {
-		// t.Errorf("expected %v tasks, got: %v task", data.Tasks, got)
 		t.Errorf("expected %v tasks, got: %v task", expected, len(got))
 	}
 }
